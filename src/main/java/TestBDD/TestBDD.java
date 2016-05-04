@@ -22,15 +22,28 @@ public class TestBDD {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        Connection connect;
         
-        Class.forName("com.mysql.jdbc.Driver");
+        String query;
+        Statement st;
+        ResultSet result;
         
-        connect = DriverManager
-          .getConnection("jdbc:mysql://localhost:3306/toto?"
-              + "user=root&password=mysql");
+        String MyDriver = "com.mysql.jdbc.Driver";
+        String MyURL = "jdbc:mysql://localhost:3306/toto";
         
+        Class.forName(MyDriver);
         
+        Connection connect = DriverManager.getConnection(MyURL, "root", "mysql");  
+        
+        query = "SELECT * from test;";
+
+        st = connect.createStatement();
+        result = st.executeQuery(query);
+        
+        while(result.next())
+        {
+            System.out.println("truc -> " + result.getInt("truc"));
+            System.out.println("bidule -> " + result.getString("bidule"));
+        }
     }
     
 }
