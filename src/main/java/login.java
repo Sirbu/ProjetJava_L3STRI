@@ -41,6 +41,11 @@ public class login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        errorDialog = new javax.swing.JDialog();
+        okButton = new javax.swing.JButton();
+        label = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        errorDetails = new javax.swing.JTextArea();
         ConnectButton = new javax.swing.JButton();
         loginField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -48,7 +53,57 @@ public class login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
 
+        errorDialog.setTitle("Error");
+        errorDialog.setAlwaysOnTop(true);
+        errorDialog.setResizable(false);
+        errorDialog.setType(java.awt.Window.Type.POPUP);
+
+        okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
+        label.setText("Error :");
+
+        errorDetails.setColumns(20);
+        errorDetails.setRows(5);
+        errorDetails.setEnabled(false);
+        jScrollPane1.setViewportView(errorDetails);
+
+        javax.swing.GroupLayout errorDialogLayout = new javax.swing.GroupLayout(errorDialog.getContentPane());
+        errorDialog.getContentPane().setLayout(errorDialogLayout);
+        errorDialogLayout.setHorizontalGroup(
+            errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorDialogLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(errorDialogLayout.createSequentialGroup()
+                        .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                            .addGroup(errorDialogLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(54, 54, 54))
+                    .addGroup(errorDialogLayout.createSequentialGroup()
+                        .addComponent(label)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        errorDialogLayout.setVerticalGroup(
+            errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, errorDialogLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(okButton)
+                .addGap(42, 42, 42))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SuperChat : Login");
 
         ConnectButton.setText("Connexion");
         ConnectButton.addActionListener(new java.awt.event.ActionListener() {
@@ -69,31 +124,33 @@ public class login extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Messagerie DJST");
+        jLabel3.setText("SuperChat");
         jLabel3.setToolTipText("");
+
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(157, 157, 157)
+                .addGap(100, 100, 100)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(ConnectButton)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(passwordField)))))
-                .addContainerGap())
+                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                            .addComponent(loginField)))
+                    .addComponent(ConnectButton))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,9 +165,9 @@ public class login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(49, 49, 49)
                 .addComponent(ConnectButton)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
@@ -127,7 +184,7 @@ public class login extends javax.swing.JFrame {
         MessageDigest md;
         char[] pass;
         byte[] hash;
-        String finalHash;
+        String finalHash = "";
         
         // variables de connection à la base de donnée
         String query;
@@ -135,7 +192,7 @@ public class login extends javax.swing.JFrame {
         ResultSet result;
         
         String MyDriver = "com.mysql.jdbc.Driver";
-        String MyURL = "jdbc:mysql://localhost:3306/java";
+        String MyURL = "jdbc:mysql://localhost:3306/java_project";
         
         // extraction et hachage du mot de passe
         pass = passwordField.getPassword();        
@@ -146,26 +203,37 @@ public class login extends javax.swing.JFrame {
             // hachage du mot de passe
             hash = md.digest(pass.toString().getBytes());
             
+            finalHash = Hex.encode(hash).toString();
+            
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try
         {
-            Class.forName(MyDriver);
-        
+            // Connection à la base de donnée
+            Class.forName(MyDriver);        
             Connection connect = DriverManager.getConnection(MyURL, "root", "mysql");  
         
-            query = "SELECT * from test;";
+            System.out.println("LOGIN = " + loginField.getText());
+            
+            query = "SELECT login, password from User"
+                    + " WHERE login = \'" + loginField.getText() + "\';";
+
+            System.out.println("QUERY = " + query);
 
             st = connect.createStatement();
             result = st.executeQuery(query);
-
+            
             while(result.next())
             {
+                System.out.println("Résultat => " + result.getString("login"));
+                System.out.println("Hash in field => " + finalHash);
+                System.out.println(result.getString("password"));
+                
                 if(loginField.getText() == result.getString("login"))
                 {
-                    if(MessageDigest.isEqual(hash, result.getBytes("password")))
+                    if(finalHash.equals(result.getString("password")))
                     {
                         // Connecté !
                         System.out.println("Connexion réussie !");
@@ -177,9 +245,22 @@ public class login extends javax.swing.JFrame {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+            
+            errorDetails.setText(ex.getSQLState());
+            errorDialog.setVisible(true);
         }
                 
     }//GEN-LAST:event_ConnectButtonActionPerformed
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        
+        ConnectButtonActionPerformed(evt);        
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+        errorDialog.setVisible(false);
+    }//GEN-LAST:event_okButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,10 +299,15 @@ public class login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ConnectButton;
+    private javax.swing.JTextArea errorDetails;
+    private javax.swing.JDialog errorDialog;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel label;
     private javax.swing.JTextField loginField;
+    private javax.swing.JButton okButton;
     private javax.swing.JPasswordField passwordField;
     // End of variables declaration//GEN-END:variables
 }
