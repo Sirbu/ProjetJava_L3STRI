@@ -1,6 +1,5 @@
 package SuperChat;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,7 +14,6 @@ import javax.swing.JOptionPane;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author pumba
@@ -25,8 +23,12 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
+    public Appclient messagerie;
+
     public Login() {
         initComponents();
+        // on centre la fenetre
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -53,7 +55,7 @@ public class Login extends javax.swing.JFrame {
         errorDialog.setTitle("Error");
         errorDialog.setAlwaysOnTop(true);
         errorDialog.setResizable(false);
-        errorDialog.setType(java.awt.Window.Type.POPUP);
+        errorDialog.setType(java.awt.Window.Type.UTILITY);
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +95,8 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(okButton)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
+
+        errorDialog.getAccessibleContext().setAccessibleDescription("");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperChat : Login");
@@ -166,87 +170,80 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginFieldActionPerformed
-        // TODO add your handling code here:
+        ConnectButtonActionPerformed(evt);
     }//GEN-LAST:event_loginFieldActionPerformed
 
     private void ConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectButtonActionPerformed
-            
+
         // variables de connection à la base de donnée
         String query;
         char[] passArray = passwordField.getPassword();
         String password = new String(passArray);
-        
+
         Statement st;
         ResultSet result;
-        
+
         String MyDriver = "com.mysql.jdbc.Driver";
         String MyURL = "jdbc:mysql://localhost:3306/java_project";
-        
+
         // TODO : pener à une méthode pour hasher les mots de passe
-        
         try
         {
             // Connection à la base de donnée
-            Class.forName(MyDriver);        
+            Class.forName(MyDriver);
+            // user et mot de passes et base de donnée
+            // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
             Connection connect = DriverManager.getConnection(MyURL, "root", "mysql");
-            
+
+            // Requête permettant d'extraire les infos de connexion
+            // dans la base de donnée
             query = "SELECT login, password from User"
                     + " WHERE login = \'" + loginField.getText() + "\';";
 
-            System.out.println("QUERY = " + query);
-
+            // on envoie la requête
             st = connect.createStatement();
             result = st.executeQuery(query);
-                        
-            while(result.next())
+
+            // si il existe un tel login...
+            if (result.first())
             {
-                System.out.println("[BDD] login => " + result.getString("login"));                
-                System.out.println("[BDD] pass => " + result.getString("password"));
-                                
-                System.out.println("LOGIN = " + loginField.getText());
-                System.out.println("Pass field = " + password);
-                              
-                if(loginField.getText().contentEquals(result.getString("login")))
-                {
-                    System.out.println("Login OK");
+                // ... et si le mot de passe correspond...
+                if (password.contentEquals(result.getString("password"))) {
+                    // ... Connecté !
+                    System.out.println("Connexion réussie !");
+                    this.setVisible(false);
                     
-                    if(password.contentEquals(result.getString("password")))
-                    {
-                        // Connecté !
-                        System.out.println("Connexion réussie !");
-                    }
-                    else
-                    {
-                        System.out.println("[ERROR] Bad login/password combination");
-                        
-                        errorDetails.setText("Bad login/password combination");
-                        errorDetails.setEnabled(true);
-                        errorDetails.setEditable(false);
-                        
-                        errorDialog.setEnabled(true);
-                        errorDialog.setLocationRelativeTo(this);
-                        errorDialog.pack();
-                        errorDialog.setVisible(true);
-                        //JOptionPane.showOptionDialog(null, "test", "test", 250, 250, null, null, null);
-                        //JOptionPane.showMessageDialog(this, "Error");
-                    }
+                    // on instancie la messagerie !
+                    messagerie = new Appclient();
+                    messagerie.setVisible(true);
                 }
+                else
+                {
+                    System.err.println("[ERROR] Bad login/password combination");
+                    showError("Bad login/password combination");
+                }
+            }    
+            else
+            {
+                System.err.println("[ERROR] Bad login/password combination");
+                showError("Bad login/password combination");
             }
-            
-        } catch (ClassNotFoundException ex) {
+
+        }catch (ClassNotFoundException ex)
+        {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+            showError("Fatal error !\n" + ex.getMessage());
+
+        }catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            
-            errorDetails.setText(ex.getSQLState());
-            errorDialog.setVisible(true);
+            showError("Database Error !\n" + ex.getMessage());
         }
-                
+
     }//GEN-LAST:event_ConnectButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        
-        ConnectButtonActionPerformed(evt);        
+
+        ConnectButtonActionPerformed(evt);
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -288,6 +285,19 @@ public class Login extends javax.swing.JFrame {
                 new Login().setVisible(true);
             }
         });
+    }
+
+    public void showError(String message) {
+        errorDetails.setText(message);
+        errorDetails.setCaretPosition(0);
+        errorDetails.setEnabled(true);
+        errorDetails.setEditable(false);
+        errorDetails.setFocusable(false);
+        
+        errorDialog.setEnabled(true);
+        errorDialog.setLocationRelativeTo(null);
+        errorDialog.pack();
+        errorDialog.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
