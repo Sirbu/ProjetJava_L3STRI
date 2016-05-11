@@ -10,7 +10,7 @@ CREATE TABLE User
      login       VARCHAR(20), 
      password	 VARCHAR(50), 
      isAdmin     BOOLEAN, 
-     statut      ENUM("Connecté", "Hors ligne", "Absent", "Occupé"), 
+     statut      ENUM("Connecte", "Hors ligne", "Absent", "Occupe"), 
  
  
      PRIMARY KEY pk_User_idUser(idUser) 
@@ -81,9 +81,9 @@ CREATE TABLE Accede
 );
 
 
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('test','test1','0','Connecté');
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('quentin','junca','0','Occupé');
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('alexis','sirbu','0','Connecté');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('test','test1','0','Connecte');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('quentin','junca','0','Occupe');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('alexis','sirbu','0','Connecte');
 INSERT INTO User (login,password,isAdmin,statut) VALUES ('sandre','dubois','0','Absent');
 
 
