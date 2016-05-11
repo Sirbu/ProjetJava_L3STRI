@@ -1,11 +1,6 @@
 package SuperChat;
 
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.Security;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,8 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.encoders.Hex;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -68,7 +62,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        label.setText("Error :");
+        label.setText("Erreur :");
 
         errorDetails.setColumns(20);
         errorDetails.setRows(5);
@@ -81,28 +75,23 @@ public class Login extends javax.swing.JFrame {
             errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(errorDialogLayout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(errorDialogLayout.createSequentialGroup()
-                        .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
-                            .addGroup(errorDialogLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(54, 54, 54))
-                    .addGroup(errorDialogLayout.createSequentialGroup()
-                        .addComponent(label)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(label)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         errorDialogLayout.setVerticalGroup(
             errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, errorDialogLayout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(label)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(okButton)
-                .addGap(42, 42, 42))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -251,6 +240,21 @@ public class Login extends javax.swing.JFrame {
                     {
                         // Connecté !
                         System.out.println("Connexion réussie !");
+                    }
+                    else
+                    {
+                        System.out.println("[ERROR] Bad login/password combination");
+                        
+                        errorDetails.setText("Bad login/password combination");
+                        errorDetails.setEnabled(true);
+                        errorDetails.setEditable(false);
+                        
+                        errorDialog.setEnabled(true);
+                        errorDialog.setLocationRelativeTo(this);
+                        errorDialog.pack();
+                        errorDialog.setVisible(true);
+                        //JOptionPane.showOptionDialog(null, "test", "test", 250, 250, null, null, null);
+                        //JOptionPane.showMessageDialog(this, "Error");
                     }
                 }
             }
