@@ -181,15 +181,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_loginFieldActionPerformed
 
     private void ConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectButtonActionPerformed
-        
-        // variables de génération du hash du password
-        // mais ça marche pas ça fait chier...
-        /* Security.addProvider(new BouncyCastleProvider());
-        MessageDigest md;
-        char[] pass;
-        byte[] hash;
-        StringBuffer hexHash = new StringBuffer(); */
-        
+            
         // variables de connection à la base de donnée
         String query;
         char[] passArray = passwordField.getPassword();
@@ -201,27 +193,8 @@ public class Login extends javax.swing.JFrame {
         String MyDriver = "com.mysql.jdbc.Driver";
         String MyURL = "jdbc:mysql://localhost:3306/java_project";
         
-        // extraction et hachage du mot de passe     
-        /*try 
-        {
-            // choix de l'algorithme de hachage
-            md = MessageDigest.getInstance("SHA-512");
-            // hachage du mot de passe
-            md.update(passwordField.getPassword().toString().getBytes());
-            hash = md.digest();
-            
-            for(int i = 0; i < hash.length;i++)
-            {
-    		String hex = Integer.toHexString(0xff & hash[i]);
-                
-   	     	if(hex.length()==1) hexHash.append('0');
-   	     	hexHash.append(hex);
-            }
-            
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
+        // TODO : pener à une méthode pour hasher les mots de passe
+        
         try
         {
             // Connection à la base de donnée
@@ -238,15 +211,16 @@ public class Login extends javax.swing.JFrame {
                         
             while(result.next())
             {
-                System.out.println("[BDD] login => " + result.getString("login"));
-                // System.out.println("Hash in field => " + hexHash);
+                System.out.println("[BDD] login => " + result.getString("login"));                
                 System.out.println("[BDD] pass => " + result.getString("password"));
+                                
                 System.out.println("LOGIN = " + loginField.getText());
                 System.out.println("Pass field = " + password);
                               
                 if(loginField.getText().contentEquals(result.getString("login")))
                 {
                     System.out.println("Login OK");
+                    
                     if(password.contentEquals(result.getString("password")))
                     {
                         // Connecté !
