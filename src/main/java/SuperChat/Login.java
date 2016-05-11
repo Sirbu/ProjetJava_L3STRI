@@ -3,6 +3,7 @@ package SuperChat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.sql.Array;
 import java.sql.Connection;
@@ -182,42 +183,50 @@ public class Login extends javax.swing.JFrame {
     private void ConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectButtonActionPerformed
         
         // variables de génération du hash du password
-        Security.addProvider(new BouncyCastleProvider());
+        // mais ça marche pas ça fait chier...
+        /* Security.addProvider(new BouncyCastleProvider());
         MessageDigest md;
         char[] pass;
         byte[] hash;
-        String finalHash = "";
+        StringBuffer hexHash = new StringBuffer(); */
         
         // variables de connection à la base de donnée
         String query;
+        char[] passArray = passwordField.getPassword();
+        String password = new String(passArray);
+        
         Statement st;
         ResultSet result;
         
         String MyDriver = "com.mysql.jdbc.Driver";
         String MyURL = "jdbc:mysql://localhost:3306/java_project";
         
-        // extraction et hachage du mot de passe
-        pass = passwordField.getPassword();        
-        try 
+        // extraction et hachage du mot de passe     
+        /*try 
         {
             // choix de l'algorithme de hachage
             md = MessageDigest.getInstance("SHA-512");
             // hachage du mot de passe
-            hash = md.digest(pass.toString().getBytes());
+            md.update(passwordField.getPassword().toString().getBytes());
+            hash = md.digest();
             
-            finalHash = Hex.encode(hash).toString();
+            for(int i = 0; i < hash.length;i++)
+            {
+    		String hex = Integer.toHexString(0xff & hash[i]);
+                
+   	     	if(hex.length()==1) hexHash.append('0');
+   	     	hexHash.append(hex);
+            }
             
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        */
         try
         {
             // Connection à la base de donnée
             Class.forName(MyDriver);        
-            Connection connect = DriverManager.getConnection(MyURL, "root", "mysql");  
-        
-            System.out.println("LOGIN = " + loginField.getText());
+            Connection connect = DriverManager.getConnection(MyURL, "root", "mysql");
             
             query = "SELECT login, password from User"
                     + " WHERE login = \'" + loginField.getText() + "\';";
@@ -226,16 +235,19 @@ public class Login extends javax.swing.JFrame {
 
             st = connect.createStatement();
             result = st.executeQuery(query);
-            
+                        
             while(result.next())
             {
-                System.out.println("Résultat => " + result.getString("login"));
-                System.out.println("Hash in field => " + finalHash);
-                System.out.println(result.getString("password"));
-                
-                if(loginField.getText() == result.getString("login"))
+                System.out.println("[BDD] login => " + result.getString("login"));
+                // System.out.println("Hash in field => " + hexHash);
+                System.out.println("[BDD] pass => " + result.getString("password"));
+                System.out.println("LOGIN = " + loginField.getText());
+                System.out.println("Pass field = " + password);
+                              
+                if(loginField.getText().contentEquals(result.getString("login")))
                 {
-                    if(finalHash.equals(result.getString("password")))
+                    System.out.println("Login OK");
+                    if(password.contentEquals(result.getString("password")))
                     {
                         // Connecté !
                         System.out.println("Connexion réussie !");
