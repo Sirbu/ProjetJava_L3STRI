@@ -1,5 +1,6 @@
 package SuperChat;
 
+import Database.Mysql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,9 +24,21 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
-    public Appclient messagerie;
+    private Appclient messagerie;
+    
+    private Mysql connector;
 
-    public Login() {
+    public Login() throws ClassNotFoundException
+    {
+        try 
+        {
+            this.connector = new Mysql();
+            
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            showError("Database Error :\n" + ex.getMessage());
+        }
         initComponents();
         // on centre la fenetre
         this.setLocationRelativeTo(null);
@@ -180,65 +193,30 @@ public class Login extends javax.swing.JFrame {
         char[] passArray = passwordField.getPassword();
         String password = new String(passArray);
 
-        Statement st;
-        ResultSet result;
-
-        String MyDriver = "com.mysql.jdbc.Driver";
-        String MyURL = "jdbc:mysql://localhost:3306/java_project";
-
-        // TODO : pener à une méthode pour hasher les mots de passe
         try
         {
-            // Connection à la base de donnée
-            Class.forName(MyDriver);
-            // user et mot de passes et base de donnée
-            // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
-            Connection connect = DriverManager.getConnection(MyURL, "root", "mysql");
-
-            // Requête permettant d'extraire les infos de connexion
-            // dans la base de donnée
-            query = "SELECT login, password from User"
-                    + " WHERE login = \'" + loginField.getText() + "\';";
-
-            // on envoie la requête
-            st = connect.createStatement();
-            result = st.executeQuery(query);
-
-            // si il existe un tel login...
-            if (result.first())
+            if(connector.connectDB(loginField.getText(), password))
             {
-                // ... et si le mot de passe correspond...
-                if (password.contentEquals(result.getString("password"))) {
-                    // ... Connecté !
-                    System.out.println("Connexion réussie !");
-                    this.setVisible(false);
-                    
-                    // on instancie la messagerie !
-                    messagerie = new Appclient();
-                    messagerie.setVisible(true);
-                }
-                else
-                {
-                    System.err.println("[ERROR] Bad login/password combination");
-                    showError("Bad login/password combination");
-                }
-            }    
-            else
-            {
-                System.err.println("[ERROR] Bad login/password combination");
-                showError("Bad login/password combination");
+                // Connexion réussie !
             }
-
-        }catch (ClassNotFoundException ex)
+        } catch (SQLException ex)
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            showError("Fatal error !\n" + ex.getMessage());
-
-        }catch (SQLException ex) {
+            showError("Database error :\n" + ex.getMessage());
+            
+        } catch (ClassNotFoundException ex) 
+        {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            showError("Database Error !\n" + ex.getMessage());
+            showError("Fatal error :\n" + ex.getMessage());
         }
+        
+        this.setVisible(false);
 
+        // on instancie la messagerie !
+        messagerie = new Appclient();
+        messagerie.setVisible(true);
+
+        
     }//GEN-LAST:event_ConnectButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
@@ -282,7 +260,14 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                try 
+                {
+                    new Login().setVisible(true);
+                    
+                }catch (ClassNotFoundException ex)
+                {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
