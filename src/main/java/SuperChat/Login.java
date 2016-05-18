@@ -1,14 +1,9 @@
 package SuperChat;
 
 import Database.Mysql;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,19 +20,22 @@ public class Login extends javax.swing.JFrame {
      * Creates new form login
      */
     private Appclient messagerie;
+    private ErrorDialog erreur;
     
     private Mysql connector;
 
     public Login() throws ClassNotFoundException
     {
+        erreur = new ErrorDialog();
+        
         try 
-        {
+        {            
             this.connector = new Mysql();
             
         } catch (SQLException ex)
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            showError("Database Error :\n" + ex.getMessage());
+            erreur.showError("Database Error :\n" + ex.getMessage());
         }
         initComponents();
         // on centre la fenetre
@@ -189,7 +187,6 @@ public class Login extends javax.swing.JFrame {
     private void ConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectButtonActionPerformed
 
         // variables de connection à la base de donnée
-        String query;
         char[] passArray = passwordField.getPassword();
         String password = new String(passArray);
 
@@ -198,25 +195,26 @@ public class Login extends javax.swing.JFrame {
             if(connector.connectDB(loginField.getText(), password))
             {
                 // Connexion réussie !
+                // on instancie la messagerie !
+                messagerie = new Appclient();
+                messagerie.setVisible(true);
+                this.setVisible(false);
             }
+            else
+            {
+                erreur.showError("Login ou mot de passe invalide !");
+            }
+            
         } catch (SQLException ex)
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            showError("Database error :\n" + ex.getMessage());
+            erreur.showError("Database error :\n" + ex.getMessage());
             
         } catch (ClassNotFoundException ex) 
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            showError("Fatal error :\n" + ex.getMessage());
-        }
-        
-        this.setVisible(false);
-
-        // on instancie la messagerie !
-        messagerie = new Appclient();
-        messagerie.setVisible(true);
-
-        
+            erreur.showError("Fatal error :\n" + ex.getMessage());
+        }        
     }//GEN-LAST:event_ConnectButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
@@ -270,19 +268,6 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         });
-    }
-
-    public void showError(String message) {
-        errorDetails.setText(message);
-        errorDetails.setCaretPosition(0);
-        errorDetails.setEnabled(true);
-        errorDetails.setEditable(false);
-        errorDetails.setFocusable(false);
-        
-        errorDialog.setEnabled(true);
-        errorDialog.setLocationRelativeTo(null);
-        errorDialog.pack();
-        errorDialog.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

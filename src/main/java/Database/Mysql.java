@@ -5,17 +5,12 @@
  */
 package Database;
 
-import SuperChat.Appclient;
-import SuperChat.Login;
+import SuperChat.ErrorDialog;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 /**
  *
  * @author alex
@@ -31,8 +26,14 @@ public class Mysql {
     
     private String query;
     
+    // peut être pas nécessaire
+    private ErrorDialog erreur;
+    
     public Mysql() throws ClassNotFoundException, SQLException
     {
+        // peut être pas nécessaire
+        erreur = new ErrorDialog();
+        
         this.MyDriver = "com.mysql.jdbc.Driver";
         this.MyUrl = "jdbc:mysql://localhost:3306/java_project";
         
@@ -60,7 +61,8 @@ public class Mysql {
         if (result.first())
         {
             // ... et si le mot de passe correspond...
-            if (password.contentEquals(result.getString("password"))) {
+            if (password.contentEquals(result.getString("password")))
+            {
                 // ... Connecté !
                 System.out.println("Connexion réussie !");
                 
@@ -68,15 +70,21 @@ public class Mysql {
             }
             else
             {
-                System.err.println("[ERROR] Bad login/password combination");
+                System.err.println("[ERROR] Bad login/Password combination");
             }
         }    
         else
         {
-            System.err.println("[ERROR] Bad login/password combination");
+            System.err.println("[ERROR] Bad Login/password combination");
         }
         
         return false;
     }
     
+    public ResultSet sendQuery(String query) throws SQLException
+    {
+        this.st = connect.createStatement();
+                
+        return (st.executeQuery(query));
+    }
 }

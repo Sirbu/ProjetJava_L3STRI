@@ -1,6 +1,11 @@
 package SuperChat;
 
+import Database.Mysql;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,7 +27,28 @@ public class Appclient extends javax.swing.JFrame {
         
         Vector salons = new Vector();
         
-        
+        try 
+        {            
+            Mysql connector = new Mysql();
+            
+            String query = "SELECT * FROM Salon;";
+            
+            ResultSet result = connector.sendQuery(query);
+            
+            while(result.next())
+            {
+                salons.add(result.getArray("nomSalon").toString());
+            }
+            
+            ListSalon.setListData(salons);
+        } 
+        catch (ClassNotFoundException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
