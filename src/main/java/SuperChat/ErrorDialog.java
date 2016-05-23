@@ -27,7 +27,7 @@ public class ErrorDialog extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
+        label = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         errorMessage1 = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
@@ -35,7 +35,7 @@ public class ErrorDialog extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setType(java.awt.Window.Type.UTILITY);
 
-        jLabel2.setText("Erreur :");
+        label.setText("Erreur :");
 
         errorMessage1.setColumns(20);
         errorMessage1.setRows(5);
@@ -56,7 +56,7 @@ public class ErrorDialog extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(label)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -68,7 +68,7 @@ public class ErrorDialog extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addComponent(jLabel2)
+                .addComponent(label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -81,6 +81,7 @@ public class ErrorDialog extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 //    /**
@@ -121,18 +122,18 @@ public class ErrorDialog extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea errorMessage1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel label;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JTextArea getErrorArea()
     {
-        return errorMessage;
+        return this.errorMessage1;
     }
     
     public javax.swing.JLabel getLabel()
     {
-        return jLabel1;
+        return this.label;
     }
     
     public void showError(String message)
@@ -144,6 +145,7 @@ public class ErrorDialog extends javax.swing.JFrame {
         this.getErrorArea().setEditable(false);
         this.getErrorArea().setFocusable(false);
            
+        this.setAlwaysOnTop(true);
         this.setEnabled(true);
         this.setLocationRelativeTo(null);
         this.pack();

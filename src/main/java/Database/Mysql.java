@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author alex
@@ -29,7 +31,7 @@ public class Mysql {
     // peut être pas nécessaire
     private ErrorDialog erreur;
     
-    public Mysql() throws ClassNotFoundException, SQLException
+    public Mysql()
     {
         // peut être pas nécessaire
         erreur = new ErrorDialog();
@@ -37,14 +39,28 @@ public class Mysql {
         this.MyDriver = "com.mysql.jdbc.Driver";
         this.MyUrl = "jdbc:mysql://localhost:3306/java_project";
         
-        // Connection à la base de donnée
-        Class.forName(this.MyDriver);
-        // user et mot de passes et base de donnée
-        // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
-        connect = DriverManager.getConnection(this.MyUrl, "root", "mysql");
+
+        try 
+        {
+            // Connection à la base de donnée
+            Class.forName(this.MyDriver);
+            
+            // user et mot de passes et base de donnée
+            // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
+            connect = DriverManager.getConnection(this.MyUrl, "root", "mysql");
+            
+        } catch (SQLException ex) 
+        {
+            Logger.getLogger(Mysql.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
+        } catch (ClassNotFoundException ex) 
+        {
+            Logger.getLogger(Mysql.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur fatale :\n" + ex.getMessage());
+        }
     }
     
-    public boolean connectDB(String login, String password) throws SQLException, ClassNotFoundException
+    public boolean checkAuth(String login, String password) throws SQLException, ClassNotFoundException
     {
 
         // TODO : pener à une méthode pour hasher les mots de passe

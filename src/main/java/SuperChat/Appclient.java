@@ -41,11 +41,8 @@ public class Appclient extends javax.swing.JFrame {
             }
             
             ListSalon.setListData(salons);
-        } 
-        catch (ClassNotFoundException ex) 
-        {
-            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) 
+            
+        }  catch (SQLException ex) 
         {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
         }

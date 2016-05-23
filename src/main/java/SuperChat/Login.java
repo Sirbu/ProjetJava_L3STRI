@@ -1,6 +1,7 @@
 package SuperChat;
 
 import Database.Mysql;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,15 +29,7 @@ public class Login extends javax.swing.JFrame {
     {
         erreur = new ErrorDialog();
         
-        try 
-        {            
-            this.connector = new Mysql();
-            
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            erreur.showError("Database Error :\n" + ex.getMessage());
-        }
+        this.connector = new Mysql();
         initComponents();
         // on centre la fenetre
         this.setLocationRelativeTo(null);
@@ -192,7 +185,7 @@ public class Login extends javax.swing.JFrame {
 
         try
         {
-            if(connector.connectDB(loginField.getText(), password))
+            if(connector.checkAuth(loginField.getText(), password))
             {
                 // Connexion réussie !
                 // on instancie la messagerie !
@@ -214,7 +207,12 @@ public class Login extends javax.swing.JFrame {
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             erreur.showError("Fatal error :\n" + ex.getMessage());
-        }        
+        }
+        catch(Exception e)
+        {
+            erreur.showError("Erreur fatale :\nLa connexion à la base de donnée\n"
+                    + "n'a probablement pas été effectuée !");
+        }
     }//GEN-LAST:event_ConnectButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
