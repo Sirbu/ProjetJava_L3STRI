@@ -20,6 +20,8 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
+    private static String username;
+
     private Appclient messagerie;
     private ErrorDialog erreur;
     
@@ -189,9 +191,13 @@ public class Login extends javax.swing.JFrame {
             {
                 // Connexion réussie !
                 // on instancie la messagerie !
+                Login.username = loginField.getText();
                 messagerie = new Appclient();
                 messagerie.setVisible(true);
+                // passage à revoir
+                connector.close();
                 this.setVisible(false);
+                this.dispose();
             }
             else
             {
@@ -201,18 +207,19 @@ public class Login extends javax.swing.JFrame {
         } catch (SQLException ex)
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            erreur.showError("Database error :\n" + ex.getMessage());
+            erreur.showError(ex.getMessage());
             
         } catch (ClassNotFoundException ex) 
         {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            erreur.showError("Fatal error :\n" + ex.getMessage());
+            erreur.showError(ex.getMessage());
         }
         catch(Exception e)
         {
-            erreur.showError("Erreur fatale :\nLa connexion à la base de donnée\n"
+            erreur.showError("La connexion à la base de donnée"
                     + "n'a probablement pas été effectuée !");
         }
+        
     }//GEN-LAST:event_ConnectButtonActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
@@ -268,6 +275,10 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
+    public static String getUsername() {
+        return username;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ConnectButton;
     private javax.swing.JTextArea errorDetails;

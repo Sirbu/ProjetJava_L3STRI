@@ -107,8 +107,6 @@ INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '1', '1', '1')
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '2', '1', '1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '3', '1', '1');
 
-
-
 SELECT * FROM User;
 SELECT * FROM Salon;
 SELECT * FROM MessageSalon;

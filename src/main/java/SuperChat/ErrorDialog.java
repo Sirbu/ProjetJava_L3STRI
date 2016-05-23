@@ -37,8 +37,13 @@ public class ErrorDialog extends javax.swing.JFrame {
 
         label.setText("Erreur :");
 
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setToolTipText("");
+
         errorMessage1.setColumns(20);
+        errorMessage1.setLineWrap(true);
         errorMessage1.setRows(5);
+        errorMessage1.setWrapStyleWord(true);
         jScrollPane2.setViewportView(errorMessage1);
 
         jButton2.setText("Continuer");

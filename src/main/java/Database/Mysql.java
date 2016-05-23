@@ -60,6 +60,15 @@ public class Mysql {
         }
     }
     
+    // réfléchir a une possibilité de traiter les résultats
+    // à l'intérieur de la classe.
+    public ResultSet sendQuery(String query) throws SQLException
+    {
+        this.st = connect.createStatement();
+        
+        return (st.executeQuery(query));
+    }
+    
     public boolean checkAuth(String login, String password) throws SQLException, ClassNotFoundException
     {
 
@@ -70,8 +79,7 @@ public class Mysql {
                 + " WHERE login = \'" + login + "\';";
 
         // on envoie la requête
-        st = connect.createStatement();
-        result = st.executeQuery(query);
+        result = sendQuery(query);
 
         // si il existe un tel login...
         if (result.first())
@@ -97,10 +105,15 @@ public class Mysql {
         return false;
     }
     
-    public ResultSet sendQuery(String query) throws SQLException
+    public void close()
     {
-        this.st = connect.createStatement();
-                
-        return (st.executeQuery(query));
+        try 
+        {
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Mysql.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Problème lors de la fermeture de connexion :\n"+
+                    ex.getMessage());
+        }
     }
 }

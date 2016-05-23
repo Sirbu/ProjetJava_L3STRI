@@ -19,6 +19,9 @@ import java.util.logging.Logger;
  */
 public class Appclient extends javax.swing.JFrame {
 
+    private Mysql connector;
+    private ErrorDialog erreur;
+    
     /**
      * Creates new form appclient
      */
@@ -26,10 +29,11 @@ public class Appclient extends javax.swing.JFrame {
         initComponents();
         
         Vector salons = new Vector();
+        erreur = new ErrorDialog();
         
         try 
         {            
-            Mysql connector = new Mysql();
+            connector = new Mysql();
             
             String query = "SELECT * FROM Salon;";
             
@@ -37,7 +41,7 @@ public class Appclient extends javax.swing.JFrame {
             
             while(result.next())
             {
-                salons.add(result.getArray("nomSalon").toString());
+                salons.add(result.getString("nomSalon"));
             }
             
             ListSalon.setListData(salons);
@@ -45,6 +49,7 @@ public class Appclient extends javax.swing.JFrame {
         }  catch (SQLException ex) 
         {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
         }
     }
 
@@ -76,6 +81,11 @@ public class Appclient extends javax.swing.JFrame {
         setTitle("SuperChat : Messagerie");
 
         DeconnectButton.setText("Deconnexion");
+        DeconnectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeconnectButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -90,8 +100,13 @@ public class Appclient extends javax.swing.JFrame {
 
         SendButton.setText("Envoyer");
 
+        jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        MessagesArea.setEditable(false);
         MessagesArea.setColumns(20);
+        MessagesArea.setLineWrap(true);
         MessagesArea.setRows(5);
+        MessagesArea.setWrapStyleWord(true);
         jScrollPane4.setViewportView(MessagesArea);
 
         ComboStatut.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Connecté", "Occupé", "Absent", "Hors ligne" }));
@@ -101,6 +116,11 @@ public class Appclient extends javax.swing.JFrame {
             }
         });
 
+        ListSalon.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ListSalonValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(ListSalon);
 
         salonLabel.setText("Salon :");
@@ -183,6 +203,101 @@ public class Appclient extends javax.swing.JFrame {
     private void ComboStatutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboStatutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ComboStatutActionPerformed
+
+    // détermine si l'utilisateur 'user' à accès en 
+    // 'accesType' (string qui est soit 'lecture' soit 'ecriture'
+    // au salon 'salon' (donner le nom du salon)
+    // peut retourner false si il y a un soucis
+    public boolean hasAccess(String user, String salon, String accessType) throws SQLException
+    {
+        if(!(accessType.contentEquals("lecture")) && (accessType.contentEquals("ecriture")))
+        {
+            return false; // you idiot...
+        }
+        
+        String query = "SELECT "+ accessType + " from Accede as A, User as U, Salon as S"
+                + " WHERE S.nomSalon = '" + salon + "'"
+                + " AND S.idSalon = A.idSalon"
+                + " AND U.login = '" + user + "'"
+                + " AND U.iduser = A.idUser;";
+        
+        ResultSet result = connector.sendQuery(query);
+        if(result.next())
+        {
+            return result.getString(accessType).contentEquals("1");
+        }
+        else
+        {   // il n'y a aucune correspondance dans la
+            // bdd donc aucun accès
+            return false;
+        }
+    }
+    
+    // Cette méthode s'exécute à chaque fois que l'on sélectionne
+    // un élément de la liste. C'est ici que les messages seront chargés    
+    private void ListSalonValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListSalonValueChanged
+        
+        String salon = this.ListSalon.getSelectedValue();
+        
+        try
+        {
+            // on vide la zone de messages en prévision
+            // de ceux qui arrivent
+            MessagesArea.setText("");
+
+            if(!hasAccess(Login.getUsername(), salon, "lecture"))
+            {
+                System.out.println(Login.getUsername() + " READ " + salon + " : NOPE");
+                this.MessagesArea.setEnabled(false);
+            }
+            else
+            {
+                System.out.println(Login.getUsername() + " READ " + salon + " : YES");
+                this.MessagesArea.setEnabled(true);
+                ResultSet result;
+
+                String requete = "SELECT login, contenu"
+                        + " FROM MessageSalon as M, Salon as S, User as U"
+                        + " WHERE S.nomSalon = \"" + salon +"\""
+                        + " AND S.idSalon = M.idSalon"
+                        + " AND M.idUser = U.idUser;";
+
+                result = connector.sendQuery(requete);
+
+                // maintenant dans result on a toutes les infos
+                // des messages du salon selectionné
+                while(result.next())
+                {
+                    this.MessagesArea.setText(MessagesArea.getText() + 
+                            "["+result.getString("login")+"]\n"
+                            + result.getString("contenu")+"\n\n");
+                }
+                
+            }
+            
+            if(!hasAccess(Login.getUsername(), salon, "ecriture"))
+            {
+                System.out.println(Login.getUsername() + " WRITE " + salon + " : NOPE");
+                this.SendButton.setEnabled(false);
+            }
+            else
+            {
+                System.out.println(Login.getUsername() + " WRITE " + salon + " : YES");
+                this.SendButton.setEnabled(true);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError(ex.getMessage());
+        }
+                
+    }//GEN-LAST:event_ListSalonValueChanged
+
+    private void DeconnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeconnectButtonActionPerformed
+        // TODO add your handling code here:
+        connector.close();
+        this.dispose();
+    }//GEN-LAST:event_DeconnectButtonActionPerformed
 
     /**
      * @param args the command line arguments
