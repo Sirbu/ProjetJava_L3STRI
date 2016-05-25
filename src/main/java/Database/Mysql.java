@@ -37,7 +37,7 @@ public class Mysql {
         erreur = new ErrorDialog();
         
         this.MyDriver = "com.mysql.jdbc.Driver";
-        this.MyUrl = "jdbc:mysql://localhost:3306/java_project";
+        this.MyUrl = "jdbc:mysql://localhost:3306/sandre_tchat";
         
 
         try 
@@ -47,7 +47,7 @@ public class Mysql {
             
             // user et mot de passes et base de donnée
             // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
-            connect = DriverManager.getConnection(this.MyUrl, "root", "mysql");
+            connect = DriverManager.getConnection(this.MyUrl, "sandre", "shenandoa");
             
         } catch (SQLException ex) 
         {

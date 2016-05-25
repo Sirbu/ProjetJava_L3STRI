@@ -31,6 +31,7 @@ public class Appclient extends javax.swing.JFrame {
         jTabbedPane1.setTitleAt(1, "Users");
         
         Vector salons = new Vector();
+        Vector users = new Vector();
         erreur = new ErrorDialog();
         
         try 
@@ -47,6 +48,18 @@ public class Appclient extends javax.swing.JFrame {
             }
             
             ListSalon.setListData(salons);
+            
+            query = "SELECT login FROM User;";
+            
+            result = connector.sendQuery(query);
+            
+            while(result.next())
+            {
+                users.add(result.getString("login"));
+            }
+            
+            ListUsers.setListData(users);
+            
             
         }  catch (SQLException ex) 
         {
@@ -80,6 +93,8 @@ public class Appclient extends javax.swing.JFrame {
         ListSalon = new javax.swing.JList<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         ListUsers = new javax.swing.JList<>();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        ListUsersSalon = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperChat : Messagerie");
@@ -148,58 +163,76 @@ public class Appclient extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        ListUsers.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ListUsersValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(ListUsers);
 
         jTabbedPane1.addTab("tab2", jScrollPane1);
+
+        jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        ListUsersSalon.setColumns(20);
+        ListUsersSalon.setRows(5);
+        jScrollPane5.setViewportView(ListUsersSalon);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(DeconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(SendButton))
-                    .addComponent(ComboStatut, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane3)
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(SendButton))
+                            .addComponent(ComboStatut, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(InfoSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 415, Short.MAX_VALUE)))
-                        .addGap(12, 12, 12))))
+                                    .addComponent(InfoSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(DeconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DeconnectButton))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(DeconnectButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(InfoSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTabbedPane1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane5)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
+                        .addGap(19, 19, 19)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -261,12 +294,14 @@ public class Appclient extends javax.swing.JFrame {
         {
             // on vide la zone de messages en prévision
             // de ceux qui arrivent
-            MessagesArea.setText("");
+            MessagesArea.setText("");              
+            ListUsersSalon.setText("");
 
             if(!hasAccess(Login.getUsername(), salon, "lecture"))
             {
                 System.out.println(Login.getUsername() + " READ " + salon + " : NOPE");
                 this.MessagesArea.setEnabled(false);
+                this.ListUsersSalon.setEnabled(false);
             }
             else
             {
@@ -290,6 +325,24 @@ public class Appclient extends javax.swing.JFrame {
                             "["+result.getString("login")+"]\n"
                             + result.getString("contenu")+"\n\n");
                 }
+               
+                
+                this.ListUsersSalon.setEnabled(true);
+                
+                requete = "SELECT DISTINCT U.login, U.statut "
+                        + "FROM User AS U, Accede AS A, Salon AS S "
+                        + "WHERE (S.idSalon = A.idSalon) "
+                        + "AND (U.idUser = A.idUser) "
+                        + "AND S.nomSalon=\""+ salon +"\";";
+                
+                result = connector.sendQuery(requete);
+                
+                while(result.next())
+                {
+                    this.ListUsersSalon.setText(ListUsersSalon.getText() 
+                            + result.getString("login")+" : "
+                            + result.getString("statut")+"\n");
+                }
                 
             }
             
@@ -303,14 +356,16 @@ public class Appclient extends javax.swing.JFrame {
                 System.out.println(Login.getUsername() + " WRITE " + salon + " : YES");
                 this.SendButton.setEnabled(true);
             }
-
+            
+            System.out.println("Affichage des users du salon : " + salon + ".");
+            
         } catch (SQLException ex) {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
             erreur.showError(ex.getMessage());
         }
                 
     }//GEN-LAST:event_ListSalonValueChanged
-
+    
     private void DeconnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeconnectButtonActionPerformed
         // TODO add your handling code here:
         connector.close();
@@ -327,6 +382,10 @@ public class Appclient extends javax.swing.JFrame {
         }
                 
     }//GEN-LAST:event_SendButtonActionPerformed
+
+    private void ListUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListUsersValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ListUsersValueChanged
 
     /**
      * @param args the command line arguments
@@ -370,6 +429,7 @@ public class Appclient extends javax.swing.JFrame {
     private javax.swing.JTextArea InfoSalon;
     private javax.swing.JList<String> ListSalon;
     private javax.swing.JList<String> ListUsers;
+    private javax.swing.JTextArea ListUsersSalon;
     private javax.swing.JTextArea MessagesArea;
     private javax.swing.JTextArea ReponseField;
     private javax.swing.JButton SendButton;
@@ -379,6 +439,7 @@ public class Appclient extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel salonLabel;
     // End of variables declaration//GEN-END:variables
