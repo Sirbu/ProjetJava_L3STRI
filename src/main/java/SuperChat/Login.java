@@ -217,7 +217,7 @@ public class Login extends javax.swing.JFrame {
         catch(Exception e)
         {
             erreur.showError("La connexion à la base de donnée"
-                    + "n'a probablement pas été effectuée !");
+                    + " n'a probablement pas été effectuée :\n" + e.getMessage());
         }
         
     }//GEN-LAST:event_ConnectButtonActionPerformed
