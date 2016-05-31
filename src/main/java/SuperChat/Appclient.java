@@ -54,12 +54,12 @@ public class Appclient extends javax.swing.JFrame {
             ListSalon.setListData(salons);
             
             query = "SELECT login FROM User WHERE login <>\""+ Login.getUsername() +"\";";
-            
             result = connector.sendQuery(query);
             
             while(result.next())
             {
-                users.add(result.getString("login"));
+                String user = result.getString("login");
+                users.add(capitalize(user));
             }
             
             ListUsers.setListData(users);
@@ -78,6 +78,17 @@ public class Appclient extends javax.swing.JFrame {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
             erreur.showError("Erreur SQL :\n" + ex.getMessage());
         }
+    }
+    
+    public static String capitalize(String str) {
+        int strLen;
+        if (str == null || (strLen = str.length()) == 0) {
+            return str;
+        }
+        return new StringBuffer(strLen)
+            .append(Character.toTitleCase(str.charAt(0)))
+            .append(str.substring(1))
+            .toString();
     }
 
     /**
@@ -372,8 +383,9 @@ public class Appclient extends javax.swing.JFrame {
                 // des messages du salon selectionné
                 while(result.next())
                 {
+                    String login = result.getString("login");
                     this.MessagesArea.setText(MessagesArea.getText() + 
-                            "["+result.getString("login")+"]\n"
+                            "["+ capitalize(login) +"]\n"
                             + result.getString("contenu")+"\n\n");
                 }
                
@@ -390,8 +402,9 @@ public class Appclient extends javax.swing.JFrame {
                 
                 while(result.next())
                 {
+                    String login = result.getString("login");
                     this.ListUsersSalon.setText(ListUsersSalon.getText() 
-                            + result.getString("login")+" : "
+                            + capitalize(login) +" : "
                             + result.getString("statut")+"\n");
                 }
                 
@@ -405,7 +418,8 @@ public class Appclient extends javax.swing.JFrame {
                 
                 while (result.next())
                 {
-                    this.InfoSalon.setText(result.getString("description")); 
+                    String description = result.getString("description");
+                    this.InfoSalon.setText(capitalize(description)); 
                 }
             }
             
@@ -551,8 +565,9 @@ public class Appclient extends javax.swing.JFrame {
             
             while(result.next())
             {
+                String login = result.getString("login");
                 this.MessagesArea.setText(MessagesArea.getText() + 
-                        "["+result.getString("login")+"]\n"
+                        "["+capitalize(login)+"]\n"
                         + result.getString("contenu")+"\n\n");
             }
             
