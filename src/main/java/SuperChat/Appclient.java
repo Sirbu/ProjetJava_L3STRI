@@ -49,7 +49,7 @@ public class Appclient extends javax.swing.JFrame {
             
             ListSalon.setListData(salons);
             
-            query = "SELECT login FROM User;";
+            query = "SELECT login FROM User WHERE login <>\""+ Login.getUsername() +"\";";
             
             result = connector.sendQuery(query);
             
@@ -406,6 +406,51 @@ public class Appclient extends javax.swing.JFrame {
 
     private void ListUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListUsersValueChanged
         // TODO add your handling code here:
+        
+        String destinataire = this.ListUsers.getSelectedValue();
+        
+        try
+        {
+            MessagesArea.setText("");              
+            ListUsersSalon.setText("");
+            InfoSalon.setText("");
+            this.ListUsersSalon.setEnabled(false);
+            this.salonLabel.setEnabled(false);
+            this.InfoSalon.setEnabled(false);
+            this.MessagesArea.setEnabled(true);
+            ResultSet result;
+            
+            String requete = "SELECT U.idUser FROM User AS U WHERE U.login= \"" + Login.getUsername() +"\";";
+            result = connector.sendQuery(requete);
+            result.first();
+            String idUserConnected = result.getString("idUser");
+            //System.out.println("Notre ID : "+ idUserConnected);
+            
+            requete = "SELECT U.idUser FROM User AS U WHERE U.login= \"" + destinataire +"\";";
+            result = connector.sendQuery(requete);
+            result.first();
+            String idDestinataire = result.getString("idUser");
+            //System.out.println("ID Destinataire : "+ idDestinataire);
+            
+            requete = "SELECT DISTINCT login, contenu"
+                    + " FROM User as U, MessageUser as M"
+                    + " WHERE (M.idExpediteur = \"" + idUserConnected +"\" OR M.idExpediteur = \"" + idDestinataire +"\")"
+                    + " AND (M.idRecepteur = \"" + idUserConnected +"\" OR M.idRecepteur = \"" + idDestinataire +"\")"
+                    + " AND (U.idUser = M.idExpediteur);";
+
+            result = connector.sendQuery(requete);
+            
+            while(result.next())
+            {
+                this.MessagesArea.setText(MessagesArea.getText() + 
+                        "["+result.getString("login")+"]\n"
+                        + result.getString("contenu")+"\n\n");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError(ex.getMessage());
+        }
     }//GEN-LAST:event_ListUsersValueChanged
 
     /**
