@@ -568,6 +568,7 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
             MessagesArea.setEnabled(true);
             salonLabel.setText("Conversation privée avec "+ ListUsers.getSelectedValue() +" :");
             salonLabel.setSize(300, 37);
+            SendButton.setEnabled(true);
             ResultSet result;
             
             String requete = "SELECT U.idUser FROM User AS U WHERE U.login= \"" + Login.getUsername() +"\";";
