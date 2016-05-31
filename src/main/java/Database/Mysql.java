@@ -101,6 +101,12 @@ public class Mysql {
         return (st.executeQuery(query));
     }
     
+    public void sendUpdate(String query) throws SQLException
+    {
+        this.st = connect.createStatement();
+        st.executeUpdate(query);
+    }
+    
     public boolean checkAuth(String login, String password) throws SQLException, ClassNotFoundException
     {
 

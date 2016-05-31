@@ -64,6 +64,14 @@ public class Appclient extends javax.swing.JFrame {
             
             ListUsers.setListData(users);
             
+            try {
+            String login = Login.getUsername();
+            String co = "update User SET statut=\"Connecté\" where login=\""+login+"\";";  
+            connector.sendUpdate(co);
+        } catch (SQLException ex) {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
             
         }  catch (SQLException ex) 
         {
@@ -263,6 +271,37 @@ public class Appclient extends javax.swing.JFrame {
 
     private void ComboStatutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboStatutActionPerformed
         // TODO add your handling code here:
+        int item;
+        String statut;
+        
+        item = this.ComboStatut.getSelectedIndex();
+        String login = Login.getUsername();
+        
+        switch (item) {
+            case 0:
+                statut="Connecté";
+                break;
+            case 1:
+                statut="Occupé";
+                break;
+            case 2:
+                statut="Absent";
+                break;
+            case 3:
+                statut="Hors ligne";
+                break;
+            default:
+                statut="Hors ligne";
+                break;
+        }
+               
+        try {
+            String query = "update User SET statut=\""+statut+"\" where login=\""+login+"\";";  
+            connector.sendUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
     }//GEN-LAST:event_ComboStatutActionPerformed
 
     // détermine si l'utilisateur 'user' à accès en 
@@ -392,6 +431,14 @@ public class Appclient extends javax.swing.JFrame {
     
     private void DeconnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeconnectButtonActionPerformed
         // TODO add your handling code here:
+        String login = Login.getUsername();
+                    
+        try {
+            String deco = "update User SET statut=\"Hors ligne\" where login=\""+login+"\";";  
+            connector.sendUpdate(deco);
+        } catch (SQLException ex) {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+        }
         connector.close();
         this.dispose();
         System.exit(0);
