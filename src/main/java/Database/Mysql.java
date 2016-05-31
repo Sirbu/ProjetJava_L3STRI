@@ -41,7 +41,7 @@ public class Mysql {
         erreur = new ErrorDialog();
         
         this.MyDriver = "com.mysql.jdbc.Driver";
-        this.MyUrl = "jdbc:mysql://192.168.43.55:3306/java_project";
+        this.MyUrl = "jdbc:mysql://localhost:3306/java_project";
         
 
         try 

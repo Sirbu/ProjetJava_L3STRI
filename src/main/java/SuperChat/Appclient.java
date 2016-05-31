@@ -667,12 +667,14 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-
-        if(ListSalon.getSelectedValue() != null)
+        
+        if(jTabbedPane1.getSelectedIndex() == 0)
         {
-            this.ListSalonValueChanged(null);
-        }            
-
+            if(ListSalon.getSelectedValue() != null)
+            {
+                this.ListSalonValueChanged(null);
+            }            
+        }
         else if(jTabbedPane1.getSelectedIndex() == 1)
         {
             if(ListUsers.getSelectedValue() != null)
