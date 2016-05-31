@@ -63,15 +63,12 @@ public class Appclient extends javax.swing.JFrame {
             }
             
             ListUsers.setListData(users);
-            
-            try {
+          
             String login = Login.getUsername();
             String co = "update User SET statut=\"Connecté\" where login=\""+login+"\";";  
             connector.sendUpdate(co);
-        } catch (SQLException ex) {
-            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
-        }
             
+            WelcomeUser.setText("Bienvenue "+capitalize(login)+" !");            
             
         }  catch (SQLException ex) 
         {
@@ -118,6 +115,7 @@ public class Appclient extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         ListUsersSalon = new javax.swing.JTextArea();
         InfoSalon = new javax.swing.JLabel();
+        WelcomeUser = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperChat : Messagerie");
@@ -203,6 +201,10 @@ public class Appclient extends javax.swing.JFrame {
         ListUsersSalon.setRequestFocusEnabled(false);
         jScrollPane5.setViewportView(ListUsersSalon);
 
+        WelcomeUser.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        WelcomeUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        WelcomeUser.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,6 +240,8 @@ public class Appclient extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(247, 247, 247)
+                        .addComponent(WelcomeUser)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -250,7 +254,9 @@ public class Appclient extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
+                        .addGap(6, 6, 6)
+                        .addComponent(WelcomeUser)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(DeconnectButton)
                             .addComponent(InfoSalon)
@@ -631,6 +637,7 @@ public class Appclient extends javax.swing.JFrame {
     private javax.swing.JTextArea MessagesArea;
     private javax.swing.JTextArea ReponseField;
     private javax.swing.JButton SendButton;
+    private javax.swing.JLabel WelcomeUser;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
