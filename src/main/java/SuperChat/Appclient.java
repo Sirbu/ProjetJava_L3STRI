@@ -110,7 +110,6 @@ public class Appclient extends javax.swing.JFrame {
         MessagesArea = new javax.swing.JTextArea();
         ComboStatut = new javax.swing.JComboBox<>();
         salonLabel = new javax.swing.JLabel();
-        InfoSalon = new javax.swing.JTextArea();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         ListSalon = new javax.swing.JList<>();
@@ -118,6 +117,7 @@ public class Appclient extends javax.swing.JFrame {
         ListUsers = new javax.swing.JList<>();
         jScrollPane5 = new javax.swing.JScrollPane();
         ListUsersSalon = new javax.swing.JTextArea();
+        InfoSalon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperChat : Messagerie");
@@ -138,6 +138,7 @@ public class Appclient extends javax.swing.JFrame {
         ReponseField.setRows(5);
         jScrollPane3.setViewportView(ReponseField);
 
+        jLabel4.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         jLabel4.setText("Repondre :");
 
         SendButton.setText("Envoyer");
@@ -164,14 +165,8 @@ public class Appclient extends javax.swing.JFrame {
             }
         });
 
+        salonLabel.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         salonLabel.setText("Salon :");
-
-        InfoSalon.setEditable(false);
-        InfoSalon.setColumns(20);
-        InfoSalon.setRows(5);
-        InfoSalon.setToolTipText("");
-        InfoSalon.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        InfoSalon.setSelectedTextColor(new java.awt.Color(237, 237, 237));
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         jTabbedPane1.setToolTipText("");
@@ -224,19 +219,22 @@ public class Appclient extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(InfoSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(DeconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jScrollPane4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(8, 8, 8)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(InfoSalon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(DeconnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,7 +253,7 @@ public class Appclient extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(DeconnectButton)
-                            .addComponent(InfoSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(InfoSalon)
                             .addComponent(salonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,15 +263,14 @@ public class Appclient extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 2, Short.MAX_VALUE)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ComboStatut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(SendButton)))
+                    .addComponent(SendButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -357,6 +354,7 @@ public class Appclient extends javax.swing.JFrame {
             MessagesArea.setText("");              
             ListUsersSalon.setText("");
             InfoSalon.setText("");
+            salonLabel.setText("Salon :");
 
             if(!hasAccess(Login.getUsername(), salon, "lecture"))
             {
@@ -384,6 +382,9 @@ public class Appclient extends javax.swing.JFrame {
                 while(result.next())
                 {
                     String login = result.getString("login");
+                    if(login.contentEquals(Login.getUsername())){
+                        login = "--Moi--";
+                    }
                     this.MessagesArea.setText(MessagesArea.getText() + 
                             "["+ capitalize(login) +"]\n"
                             + result.getString("contenu")+"\n\n");
@@ -403,6 +404,9 @@ public class Appclient extends javax.swing.JFrame {
                 while(result.next())
                 {
                     String login = result.getString("login");
+                    if(login.contentEquals(Login.getUsername())){
+                        login = "Moi";
+                    }
                     this.ListUsersSalon.setText(ListUsersSalon.getText() 
                             + capitalize(login) +" : "
                             + result.getString("statut")+"\n");
@@ -537,10 +541,11 @@ public class Appclient extends javax.swing.JFrame {
             MessagesArea.setText("");              
             ListUsersSalon.setText("");
             InfoSalon.setText("");
-            this.ListUsersSalon.setEnabled(false);
-            this.salonLabel.setEnabled(false);
-            this.InfoSalon.setEnabled(false);
-            this.MessagesArea.setEnabled(true);
+            ListUsersSalon.setEnabled(false);
+            InfoSalon.setEnabled(false);
+            MessagesArea.setEnabled(true);
+            salonLabel.setText("Conversation privée avec "+ ListUsers.getSelectedValue() +" :");
+            salonLabel.setSize(300, 37);
             ResultSet result;
             
             String requete = "SELECT U.idUser FROM User AS U WHERE U.login= \"" + Login.getUsername() +"\";";
@@ -566,6 +571,9 @@ public class Appclient extends javax.swing.JFrame {
             while(result.next())
             {
                 String login = result.getString("login");
+                if(login.contentEquals(Login.getUsername())){
+                    login = "--Moi--";
+                }
                 this.MessagesArea.setText(MessagesArea.getText() + 
                         "["+capitalize(login)+"]\n"
                         + result.getString("contenu")+"\n\n");
@@ -616,7 +624,7 @@ public class Appclient extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboStatut;
     private javax.swing.JButton DeconnectButton;
-    private javax.swing.JTextArea InfoSalon;
+    private javax.swing.JLabel InfoSalon;
     private javax.swing.JList<String> ListSalon;
     private javax.swing.JList<String> ListUsers;
     private javax.swing.JTextArea ListUsersSalon;
