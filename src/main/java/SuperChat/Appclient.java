@@ -3,9 +3,13 @@ package SuperChat;
 import Database.Mysql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sun.swing.SwingUtilities2;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -397,9 +401,67 @@ public class Appclient extends javax.swing.JFrame {
         
         if(!MessagesArea.getText().isEmpty())
         {
-            // maintenant il faut savoir si on envoie
-            // le message à un utilisateur ou un salon
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+            Date date = new Date();
             
+            System.out.println("Selected tab : " + jTabbedPane1.getSelectedIndex());
+            
+            // on cherche l'id de l'expéditeur
+            String userQuery = "SELECT idUser FROM User WHERE login = \"" + Login.getUsername() + "\";";
+            
+            try 
+            {                
+                ResultSet userResult = connector.sendQuery(userQuery);
+                userResult.first();              
+                
+                String insert = "INSERT INTO ";
+                
+                // maintenant il faut savoir si on envoie
+                // le message à un utilisateur ou un salon
+                if(this.jTabbedPane1.getSelectedIndex() == 0)
+                {
+                    System.out.println("Message Salon");
+                    
+                    // et l'id du salon
+                    String salonQuery = "SELECT idSalon FROM Salon "
+                    + " WHERE nomsalon = '" + ListSalon.getSelectedValue() + "';";
+                    
+                    ResultSet salonResult = connector.sendQuery(salonQuery);
+                    salonResult.first();
+                    
+                    insert += "MessageSalon (contenu,dateEnvoi,idUser,idSalon) "
+                    + "VALUES (?, '" + dateFormat.format(date) + "', " 
+                    + "'" + userResult.getString("idUser") + "', "
+                    + "'" + salonResult.getString("idSalon") + "');";
+                }
+                else if(this.jTabbedPane1.getSelectedIndex() == 1)
+                {
+                    System.out.println("Message Privé");
+                    
+                    // il faut l'id du récepteur
+                    String recptQuery = "SELECT idUser FROM User "
+                            + "WHERE login = '" + ListUsers.getSelectedValue() + "';";
+                    
+                    ResultSet recptResult = connector.sendQuery(recptQuery);
+                    recptResult.first();
+                    
+                    insert += "MessageUser (contenu,dateEnvoi,idExpediteur,idRecepteur) "
+                    + "VALUES (?, '" + dateFormat.format(date) + "', " 
+                    + "'" + userResult.getString("idUser") + "', "
+                    + "'" + recptResult.getString("idUser") + "');";                    
+                }
+                
+                connector.setPrep_st(insert);
+                
+                // on rajoute le contenu dans la requête préparée
+                connector.getPrep_st().setString(1, this.ReponseField.getText());
+                System.out.println(connector.getPrep_st());
+                connector.sendPreparedUpdate();
+            
+            } catch (SQLException ex) {
+                Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+                erreur.showError("Erreur SQL :\n" + ex.getMessage());
+            }
         }
                 
     }//GEN-LAST:event_SendButtonActionPerformed
