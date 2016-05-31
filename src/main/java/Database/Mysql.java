@@ -37,7 +37,7 @@ public class Mysql {
         erreur = new ErrorDialog();
         
         this.MyDriver = "com.mysql.jdbc.Driver";
-        this.MyUrl = "jdbc:mysql://localhost:3306/sandre_tchat";
+        this.MyUrl = "jdbc:mysql://localhost:3306/java_project";
         
 
         try 
@@ -47,7 +47,7 @@ public class Mysql {
             
             // user et mot de passes et base de donnée
             // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
-            connect = DriverManager.getConnection(this.MyUrl, "sandre", "shenandoa");
+            connect = DriverManager.getConnection(this.MyUrl, "root", "mysql");
             
         } catch (SQLException ex) 
         {
@@ -67,6 +67,12 @@ public class Mysql {
         this.st = connect.createStatement();
         
         return (st.executeQuery(query));
+    }
+    
+    public void sendUpdate(String query) throws SQLException
+    {
+        this.st = connect.createStatement();
+        st.executeUpdate(query);
     }
     
     public boolean checkAuth(String login, String password) throws SQLException, ClassNotFoundException

@@ -1,5 +1,15 @@
 package SuperChat;
 
+import Database.Mysql;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Timer;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,15 +20,49 @@ package SuperChat;
  *
  * @author pumba
  */
-public class Appadmin extends javax.swing.JFrame {
+public class Appadmin extends javax.swing.JFrame implements ActionListener{
 
     /**
      * Creates new form appadmin
      */
+    private Mysql connector;
+    private ErrorDialog erreur;
+    private PageGere gere;
+    private Creer cree;
+    private Timer timer;
+    private String val;
+    
     public Appadmin() {
         initComponents();
         
+        this.timer = new Timer(200,this);
+        this.timer.setInitialDelay(200);
+        this.timer.start();
         
+        Vector salons = new Vector();
+            erreur = new ErrorDialog();
+             try 
+        {            
+            connector = new Mysql();
+            
+            String query = "SELECT * FROM Salon;";
+            
+            ResultSet result = connector.sendQuery(query);
+            
+            while(result.next())
+            {
+                salons.add(result.getString("nomSalon"));
+            }
+            
+            ListSalon.setListData(salons);
+            
+            
+        }  catch (SQLException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
+        }
+            
     }
 
     /**
@@ -30,25 +74,42 @@ public class Appadmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        creer = new javax.swing.JButton();
+        supprimer = new javax.swing.JButton();
+        gerer = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
+        ListSalon = new javax.swing.JList<>();
+        deconnexion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
-        jButton1.setText("Creer");
+        creer.setText("Creer");
+        creer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                creerActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Supprimer");
+        supprimer.setText("Supprimer");
+        supprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supprimerActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Gerer");
+        gerer.setText("Gerer");
+        gerer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gererActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -58,26 +119,29 @@ public class Appadmin extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 1, 15)); // NOI18N
         jLabel1.setText("Administrateur");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        ListSalon.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Salon 1", "Salon 2", "Salon 3", "Salon 4", "...." };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
-
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Nb Connectés :", "Nb Connectés :", "Nb Connectés :", "Nb Connectés :" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        ListSalon.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ListSalonValueChanged(evt);
+            }
         });
-        jScrollPane2.setViewportView(jList2);
-
-        jList3.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Nb Msgs :", "Nb Msgs :", "Nb Msgs :", "Nb Msgs :" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        ListSalon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ListSalonKeyPressed(evt);
+            }
         });
-        jScrollPane3.setViewportView(jList3);
+        jScrollPane1.setViewportView(ListSalon);
+
+        deconnexion.setText("Deconnexion");
+        deconnexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deconnexionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,33 +150,25 @@ public class Appadmin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(287, 287, 287)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 11, Short.MAX_VALUE))))
+                        .addGap(152, 152, 152)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(152, 152, 152)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(372, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(gerer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(deconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -122,21 +178,90 @@ public class Appadmin extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(supprimer)
+                    .addComponent(creer)
+                    .addComponent(gerer)
+                    .addComponent(deconnexion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void gererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gererActionPerformed
+        // TODO add your handling code here:
+            gere = new PageGere();
+            gere.setVisible(true);
+    }//GEN-LAST:event_gererActionPerformed
+
+    private void deconnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnexionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deconnexionActionPerformed
+
+    private void ListSalonValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListSalonValueChanged
+        // TODO add your handling code here:
+         val = ListSalon.getSelectedValue();
+        
+    }//GEN-LAST:event_ListSalonValueChanged
+
+    private void ListSalonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ListSalonKeyPressed
+        // TODO add your handling code here
+    }//GEN-LAST:event_ListSalonKeyPressed
+
+    private void creerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creerActionPerformed
+        // TODO add your handling code here
+        cree = new Creer();
+        cree.setVisible(true);
+//        String requete ="INSERT INTO";
+    }//GEN-LAST:event_creerActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        Vector salons = new Vector();
+            erreur = new ErrorDialog();
+             try 
+        {            
+            
+            String query = "SELECT * FROM Salon;";
+            
+            ResultSet result = connector.sendQuery(query);
+            
+            while(result.next())
+            {
+                salons.add(result.getString("nomSalon"));
+            }
+            
+            ListSalon.setListData(salons);
+            
+            
+        }  catch (SQLException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_formWindowActivated
+
+    private void supprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supprimerActionPerformed
+        // TODO add your handling code here:
+      
+            
+            erreur = new ErrorDialog();
+             try 
+        {            
+            
+            String query = "DELETE FROM 'Salon' WHERE nomSalon=\""+val+"\";";
+            
+           connector.sendUpdate(query);          
+            
+        }  catch (SQLException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_supprimerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,16 +300,41 @@ public class Appadmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JList<String> ListSalon;
+    private javax.swing.JButton creer;
+    private javax.swing.JButton deconnexion;
+    private javax.swing.JButton gerer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton supprimer;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Vector salons = new Vector();
+            erreur = new ErrorDialog();
+             try 
+        {            
+           
+            
+            String query = "SELECT * FROM Salon;";
+            
+            ResultSet result = connector.sendQuery(query);
+            
+            while(result.next())
+            {
+                salons.add(result.getString("nomSalon"));
+            }
+            
+            ListSalon.setListData(salons);
+            
+            
+        }  catch (SQLException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
+        }
+    }
 }
+
