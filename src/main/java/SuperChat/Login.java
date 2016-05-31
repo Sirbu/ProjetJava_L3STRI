@@ -29,10 +29,11 @@ public class Login extends javax.swing.JFrame {
 
     public Login() throws ClassNotFoundException
     {
-        erreur = new ErrorDialog();
-        
+        erreur = new ErrorDialog();        
         this.connector = new Mysql();
+        
         initComponents();
+        
         // on centre la fenetre
         this.setLocationRelativeTo(null);
     }
@@ -216,6 +217,7 @@ public class Login extends javax.swing.JFrame {
         }
         catch(Exception e)
         {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, e);
             erreur.showError("La connexion à la base de donnée"
                     + " n'a probablement pas été effectuée :\n" + e.getMessage());
         }

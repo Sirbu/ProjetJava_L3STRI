@@ -1,6 +1,12 @@
 package SuperChat;
 
 import Database.Mysql;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -9,6 +15,7 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
 import sun.swing.SwingUtilities2;
 
 /*
@@ -21,16 +28,21 @@ import sun.swing.SwingUtilities2;
  *
  * @author pumba
  */
-public class Appclient extends javax.swing.JFrame {
+public class Appclient extends javax.swing.JFrame implements ActionListener{
 
     private Mysql connector;
     private ErrorDialog erreur;
+    private Timer timer;
     
     /**
      * Creates new form appclient
      */
     public Appclient() {
         initComponents();
+        
+        this.timer = new Timer(200, this);
+        this.timer.setInitialDelay(200);
+        this.timer.start();
         
         jTabbedPane1.setTitleAt(1, "Users");
         
@@ -153,6 +165,8 @@ public class Appclient extends javax.swing.JFrame {
         MessagesArea.setLineWrap(true);
         MessagesArea.setRows(5);
         MessagesArea.setWrapStyleWord(true);
+        MessagesArea.setAutoscrolls(false);
+        MessagesArea.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         MessagesArea.setRequestFocusEnabled(false);
         jScrollPane4.setViewportView(MessagesArea);
 
@@ -211,8 +225,17 @@ public class Appclient extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ComboStatut, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,7 +275,7 @@ public class Appclient extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(WelcomeUser)
@@ -534,7 +557,8 @@ public class Appclient extends javax.swing.JFrame {
                 erreur.showError("Erreur SQL :\n" + ex.getMessage());
             }
         }
-                
+            
+        ReponseField.setText("");
     }//GEN-LAST:event_SendButtonActionPerformed
 
     private void ListUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListUsersValueChanged
@@ -648,4 +672,16 @@ public class Appclient extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel salonLabel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if(jTabbedPane1.getSelectedIndex() == 0)
+        {
+            this.ListSalonValueChanged(null);
+        }
+        else if(jTabbedPane1.getSelectedIndex() == 1)
+        {
+            this.ListUsersValueChanged(null);   
+        }
+    }
 }
