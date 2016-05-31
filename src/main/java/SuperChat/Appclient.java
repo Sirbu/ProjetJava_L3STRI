@@ -566,11 +566,15 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
             ListUsersSalon.setEnabled(false);
             InfoSalon.setEnabled(false);
             MessagesArea.setEnabled(true);
-            salonLabel.setText("Conversation privée avec "+ ListUsers.getSelectedValue() +" :");
-            salonLabel.setSize(300, 37);
-            ResultSet result;
             
-            String requete = "SELECT U.idUser FROM User AS U WHERE U.login= \"" + Login.getUsername() +"\";";
+            ResultSet result;
+            String requete = "SELECT U.statut FROM User AS U WHERE LOWER(U.login)= LOWER(\"" + ListUsers.getSelectedValue() +"\");";
+            result = connector.sendQuery(requete);
+            result.first();
+            salonLabel.setText("Conversation privée avec "+ ListUsers.getSelectedValue() +" ["+ result.getString("statut") +"] :");
+            salonLabel.setSize(350, 37);
+            
+            requete = "SELECT U.idUser FROM User AS U WHERE U.login= \"" + Login.getUsername() +"\";";
             result = connector.sendQuery(requete);
             result.first();
             String idUserConnected = result.getString("idUser");
