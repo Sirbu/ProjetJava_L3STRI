@@ -6,6 +6,7 @@
 package Database;
 
 import SuperChat.ErrorDialog;
+import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,7 +24,10 @@ public class Mysql {
     private String MyUrl;
 
     private Connection connect;
+    
     private Statement st;
+    private PreparedStatement prep_st;
+    
     private ResultSet result;
     
     private String query;
@@ -37,7 +41,7 @@ public class Mysql {
         erreur = new ErrorDialog();
         
         this.MyDriver = "com.mysql.jdbc.Driver";
-        this.MyUrl = "jdbc:mysql://localhost:3306/sandre_tchat";
+        this.MyUrl = "jdbc:mysql://localhost:3306/java_project";
         
 
         try 
@@ -47,7 +51,7 @@ public class Mysql {
             
             // user et mot de passes et base de donnée
             // sont temporaires. Tout est en local jusqu'à trouver mieux (raspi)
-            connect = DriverManager.getConnection(this.MyUrl, "sandre", "shenandoa");
+            connect = DriverManager.getConnection(this.MyUrl, "root", "mysql");
             
         } catch (SQLException ex) 
         {
@@ -59,6 +63,34 @@ public class Mysql {
             erreur.showError("Erreur fatale :\n" + ex.getMessage());
         }
     }
+
+    public PreparedStatement getPrep_st() {
+        return prep_st;
+    }
+
+    public void setPrep_st(String prep_st) throws SQLException {
+        this.prep_st = (PreparedStatement) connect.prepareStatement(prep_st);
+    }
+
+    public ResultSet sendPrepQuery() throws SQLException
+    {
+        return this.prep_st.executeQuery();
+    }
+    
+    public void sendPreparedUpdate() throws SQLException
+    {
+        this.prep_st.executeUpdate();
+    }
+    
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+    
+    
     
     // réfléchir a une possibilité de traiter les résultats
     // à l'intérieur de la classe.

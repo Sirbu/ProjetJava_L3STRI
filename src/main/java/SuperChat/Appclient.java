@@ -3,9 +3,13 @@ package SuperChat;
 import Database.Mysql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sun.swing.SwingUtilities2;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -377,9 +381,54 @@ public class Appclient extends javax.swing.JFrame {
         
         if(!MessagesArea.getText().isEmpty())
         {
-            // maintenant il faut savoir si on envoie
-            // le message à un utilisateur ou un salon
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+            Date date = new Date();
             
+            // on cherche l'id de l'expéditeur
+            String userQuery = "SELECT idUser FROM User WHERE login = \"" + Login.getUsername() + "\";";
+            
+            try 
+            {
+                // et l'id du salon
+                String salonQuery = "SELECT idSalon FROM Salon "
+                    + " WHERE nomsalon = '" + ListSalon.getSelectedValue() + "';";
+                
+                ResultSet userResult = connector.sendQuery(userQuery);
+                userResult.first();
+                
+                ResultSet salonResult = connector.sendQuery(salonQuery);
+                salonResult.first();
+                
+                String insert = "INSERT INTO ";
+                
+                // maintenant il faut savoir si on envoie
+                // le message à un utilisateur ou un salon
+                if(this.jTabbedPane1.getSelectedIndex() == 0)
+                {
+                    System.out.println("Message Salon");
+                    
+                    insert += "MessageSalon (contenu,dateEnvoi,idUser,idSalon) "
+                    + "VALUES (?, '" + dateFormat.format(date) + "', " 
+                    + "'" + userResult.getString("idUser") + "', "
+                    + "'" + salonResult.getString("idSalon") + "');";
+                    
+                    connector.setPrep_st(insert);
+                    
+                    // on rajoute le contenu dans la requête préparée
+                    connector.getPrep_st().setString(1, this.ReponseField.getText());
+                    System.out.println(connector.getPrep_st());
+                    connector.sendPreparedUpdate();
+
+                }
+                else if(this.jTabbedPane1.getSelectedIndex() == 1)
+                {
+                    insert += "MessageUser ";
+                }
+            
+            } catch (SQLException ex) {
+                Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+                erreur.showError("Erreur SQL :\n" + ex.getMessage());
+            }
         }
                 
     }//GEN-LAST:event_SendButtonActionPerformed
