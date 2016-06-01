@@ -30,8 +30,8 @@ public class DelUser extends javax.swing.JFrame {
         {            
             connector = new Mysql();
             
-            String requete = "SELECT login FROM User;";
-            
+            String requete = "SELECT login FROM User WHERE login<>\""+Login.getUsername()+"\";";
+           
             ResultSet result = connector.sendQuery(requete);
             
             while(result.next())
