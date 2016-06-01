@@ -41,6 +41,8 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         this.timer.setInitialDelay(200);
         this.timer.start();
         
+        this.setLocationRelativeTo(null);
+        
         erreur = new ErrorDialog();
         try 
         {            

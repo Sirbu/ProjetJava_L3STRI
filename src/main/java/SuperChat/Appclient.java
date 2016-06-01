@@ -50,6 +50,8 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
         Vector users = new Vector();
         erreur = new ErrorDialog();
         
+        this.setLocationRelativeTo(null);
+        
         try 
         {            
             connector = new Mysql();

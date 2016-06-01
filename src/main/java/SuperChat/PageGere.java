@@ -26,6 +26,8 @@ public class PageGere extends javax.swing.JFrame {
     public PageGere() {
         initComponents();
                    
+        this.setLocationRelativeTo(null);
+        
         connector = new Mysql();
         erreur = new ErrorDialog();
         try

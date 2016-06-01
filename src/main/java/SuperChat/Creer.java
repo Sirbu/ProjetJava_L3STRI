@@ -25,6 +25,7 @@ public class Creer extends javax.swing.JFrame {
     public Creer() {
         initComponents();
         erreur = new ErrorDialog();
+        this.setLocationRelativeTo(null);
     }
 
     /**

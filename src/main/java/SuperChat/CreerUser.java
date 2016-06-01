@@ -25,6 +25,7 @@ public class CreerUser extends javax.swing.JFrame {
     public CreerUser() {
         initComponents();
         erreur = new ErrorDialog();
+        this.setLocationRelativeTo(null);
     }
 
     /**

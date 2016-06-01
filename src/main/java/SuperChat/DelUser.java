@@ -25,6 +25,7 @@ public class DelUser extends javax.swing.JFrame {
     public DelUser() {
         initComponents();
         erreur = new ErrorDialog();
+        this.setLocationRelativeTo(null);
         try 
         {            
             connector = new Mysql();
@@ -140,10 +141,14 @@ public class DelUser extends javax.swing.JFrame {
         erreur = new ErrorDialog();
         try 
         {    
-            String requete = "DELETE MessageUser FROM MessageUser, User WHERE login=\""+ListUser.getSelectedItem()+"\" AND MessageUser.idExpediteur=User.idUser;";
+            String requete = "DELETE MessageUser FROM MessageUser, User WHERE login=\""+ListUser.getSelectedItem()+"\" AND (MessageUser.idExpediteur=User.idUser OR MessageUser.idRecepteur=User.idUser);";
             //System.out.println(requete);
             connector.sendUpdate(requete);
-                       
+                  
+            requete = "DELETE MessageSalon FROM MessageSalon, User WHERE login=\""+ListUser.getSelectedItem()+"\" AND MessageSalon.idUser=User.idUser;";
+            //System.out.println(requete);
+            connector.sendUpdate(requete);
+            
             requete = "DELETE FROM User WHERE login=\""+ListUser.getSelectedItem()+"\";";
             //System.out.println(requete);
             connector.sendUpdate(requete);     

@@ -81,10 +81,10 @@ CREATE TABLE Accede
 );
 
 
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('test','test1','0','Connecte');
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('quentin','junca','0','Occupe');
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('alexis','sirbu','0','Connecte');
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('sandre','dubois','0','Absent');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('test','test1','0','Hors Ligne');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('quentin','junca','0','Hors Ligne');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('alexis','sirbu','0','Hors Ligne');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('sandre','dubois','0','Hors Ligne');
 INSERT INTO User (login,password,isAdmin,statut) VALUES ('cedric','tavera','1','Hors Ligne');
 
 
