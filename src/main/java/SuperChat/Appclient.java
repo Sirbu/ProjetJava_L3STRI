@@ -135,6 +135,16 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
         setTitle("SuperChat : Messagerie");
 
         DeconnectButton.setText("Deconnexion");
+        DeconnectButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                DeconnectButtonMouseExited(evt);
+            }
+        });
+        DeconnectButton.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                DeconnectButtonMouseMoved(evt);
+            }
+        });
         DeconnectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeconnectButtonActionPerformed(evt);
@@ -568,7 +578,8 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
             ListUsersSalon.setEnabled(false);
             InfoSalon.setEnabled(false);
             MessagesArea.setEnabled(true);
-
+            SendButton.setEnabled(true);
+            
             ResultSet result;
             String requete = "SELECT U.statut FROM User AS U WHERE LOWER(U.login)= LOWER(\"" + ListUsers.getSelectedValue() +"\");";
             result = connector.sendQuery(requete);
