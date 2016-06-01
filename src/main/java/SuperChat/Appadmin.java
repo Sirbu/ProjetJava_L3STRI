@@ -29,6 +29,8 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
     private ErrorDialog erreur;
     private PageGere gere;
     private Creer cree;
+    private CreerUser creeruser;
+    private DelUser deluser;
     private Timer timer;
     private Appclient Messagerie;
     
@@ -78,6 +80,8 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         deconnexion = new javax.swing.JButton();
         ListSalon = new javax.swing.JComboBox<>();
         AccesTchat = new javax.swing.JButton();
+        NewUser = new javax.swing.JButton();
+        NewUser1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -86,21 +90,21 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        creer.setText("Creer");
+        creer.setText("Creer Salon");
         creer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 creerActionPerformed(evt);
             }
         });
 
-        supprimer.setText("Supprimer");
+        supprimer.setText("Supprimer Salon");
         supprimer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 supprimerActionPerformed(evt);
             }
         });
 
-        gerer.setText("Gerer");
+        gerer.setText("Gerer Salon");
         gerer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gererActionPerformed(evt);
@@ -135,30 +139,50 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
             }
         });
 
+        NewUser.setText("Créer Nouvel Utilisateur");
+        NewUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewUserActionPerformed(evt);
+            }
+        });
+
+        NewUser1.setText("Supprimer Utilisateur");
+        NewUser1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewUser1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(372, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ListSalon, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(gerer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(137, 137, 137)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(gerer, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)))
+                                .addGap(17, 17, 17)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(NewUser)
+                            .addComponent(NewUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(AccesTchat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(deconnexion, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))))
@@ -167,21 +191,26 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AccesTchat)
+                            .addComponent(NewUser)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel1))
-                    .addComponent(AccesTchat))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)))
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(supprimer)
                     .addComponent(creer)
                     .addComponent(gerer)
-                    .addComponent(deconnexion))
+                    .addComponent(deconnexion)
+                    .addComponent(NewUser1))
                 .addGap(28, 28, 28)
                 .addComponent(ListSalon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -204,7 +233,6 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         // TODO add your handling code here
         cree = new Creer();
         cree.setVisible(true);
-//        String requete ="INSERT INTO";
     }//GEN-LAST:event_creerActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -281,6 +309,18 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         Messagerie.setVisible(true);
     }//GEN-LAST:event_AccesTchatActionPerformed
 
+    private void NewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewUserActionPerformed
+        // TODO add your handling code here:
+        creeruser = new CreerUser();
+        creeruser.setVisible(true);
+    }//GEN-LAST:event_NewUserActionPerformed
+
+    private void NewUser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewUser1ActionPerformed
+        // TODO add your handling code here:
+        deluser = new DelUser();
+        deluser.setVisible(true);
+    }//GEN-LAST:event_NewUser1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -320,6 +360,8 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AccesTchat;
     private javax.swing.JComboBox<String> ListSalon;
+    private javax.swing.JButton NewUser;
+    private javax.swing.JButton NewUser1;
     private javax.swing.JButton creer;
     private javax.swing.JButton deconnexion;
     private javax.swing.JButton gerer;
