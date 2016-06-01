@@ -84,7 +84,7 @@ CREATE TABLE Accede
 INSERT INTO User (login,password,isAdmin,statut) VALUES ('test','test1','0','Hors Ligne');
 INSERT INTO User (login,password,isAdmin,statut) VALUES ('quentin','junca','0','Hors Ligne');
 INSERT INTO User (login,password,isAdmin,statut) VALUES ('alexis','sirbu','0','Hors Ligne');
-INSERT INTO User (login,password,isAdmin,statut) VALUES ('sandre','dubois','0','Hors Ligne');
+INSERT INTO User (login,password,isAdmin,statut) VALUES ('sandre','dubois','1','Hors Ligne');
 INSERT INTO User (login,password,isAdmin,statut) VALUES ('cedric','tavera','1','Hors Ligne');
 
 
@@ -105,6 +105,7 @@ INSERT INTO MessageUser (contenu,dateEnvoi,idExpediteur,idRecepteur) VALUES ('Me
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('1','2','1','1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('1','1','1','1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('2','1','1','0');
+INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('2','2','1','1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '1', '1', '1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '2', '1', '1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '3', '1', '1');
