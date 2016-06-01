@@ -156,7 +156,17 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("/home/sandre/NetBeansProjects/ProjetJava_L3STRI/src/main/java/SuperChat/Superman_petit_logo.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.JLabel() {
+            public javax.swing.Icon getIcon() {
+                try {
+                    return new javax.swing.ImageIcon(
+                        new java.net.URL("http://sirbu.freeboxos.fr/Superman_petit_logo.png")
+                    );
+                } catch (java.net.MalformedURLException e) {
+                }
+                return null;
+            }
+        }.getIcon());
         jLabel2.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -193,7 +203,7 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(AccesTchat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(deconnexion, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))))
+                            .addComponent(deconnexion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
@@ -222,7 +232,7 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
                     .addComponent(NewUser1))
                 .addGap(28, 28, 28)
                 .addComponent(ListSalon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();

@@ -220,7 +220,17 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
         WelcomeUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         WelcomeUser.setText("jLabel1");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/home/sandre/NetBeansProjects/ProjetJava_L3STRI/src/main/java/SuperChat/Superman_petit_logo.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.JLabel() {
+            public javax.swing.Icon getIcon() {
+                try {
+                    return new javax.swing.ImageIcon(
+                        new java.net.URL("http://sirbu.freeboxos.fr/Superman_petit_logo.png")
+                    );
+                } catch (java.net.MalformedURLException e) {
+                }
+                return null;
+            }
+        }.getIcon());
         jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
