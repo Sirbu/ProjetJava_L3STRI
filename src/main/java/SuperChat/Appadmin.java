@@ -31,6 +31,7 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
     private Creer cree;
     private Timer timer;
     private String val;
+    private Appclient Messagerie;
     
     public Appadmin() {
         initComponents();
@@ -39,22 +40,19 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         this.timer.setInitialDelay(200);
         this.timer.start();
         
-        Vector salons = new Vector();
-            erreur = new ErrorDialog();
-             try 
+        erreur = new ErrorDialog();
+        try 
         {            
             connector = new Mysql();
             
-            String query = "SELECT * FROM Salon;";
+            String query = "SELECT nomSalon FROM Salon;";
             
             ResultSet result = connector.sendQuery(query);
             
             while(result.next())
             {
-                salons.add(result.getString("nomSalon"));
+                ListSalon.addItem(result.getString("nomSalon"));
             }
-            
-            ListSalon.setListData(salons);
             
             
         }  catch (SQLException ex) 
@@ -79,9 +77,9 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         gerer = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ListSalon = new javax.swing.JList<>();
         deconnexion = new javax.swing.JButton();
+        ListSalon = new javax.swing.JComboBox<>();
+        AccesTchat = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -119,27 +117,23 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 1, 15)); // NOI18N
         jLabel1.setText("Administrateur");
 
-        ListSalon.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Salon 1", "Salon 2", "Salon 3", "Salon 4", "...." };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        ListSalon.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                ListSalonValueChanged(evt);
-            }
-        });
-        ListSalon.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ListSalonKeyPressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(ListSalon);
-
         deconnexion.setText("Deconnexion");
         deconnexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deconnexionActionPerformed(evt);
+            }
+        });
+
+        ListSalon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListSalonActionPerformed(evt);
+            }
+        });
+
+        AccesTchat.setText("Accès au Tchat");
+        AccesTchat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AccesTchatActionPerformed(evt);
             }
         });
 
@@ -156,36 +150,40 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
                         .addGap(28, 28, 28)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(372, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(gerer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(deconnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ListSalon, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(gerer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(AccesTchat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(deconnexion, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))))
                 .addGap(25, 25, 25))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabel1))
+                    .addComponent(AccesTchat))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(supprimer)
                     .addComponent(creer)
                     .addComponent(gerer)
                     .addComponent(deconnexion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(ListSalon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,17 +197,10 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
 
     private void deconnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnexionActionPerformed
         // TODO add your handling code here:
+        connector.close();
+        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_deconnexionActionPerformed
-
-    private void ListSalonValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListSalonValueChanged
-        // TODO add your handling code here:
-         val = ListSalon.getSelectedValue();
-        
-    }//GEN-LAST:event_ListSalonValueChanged
-
-    private void ListSalonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ListSalonKeyPressed
-        // TODO add your handling code here
-    }//GEN-LAST:event_ListSalonKeyPressed
 
     private void creerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creerActionPerformed
         // TODO add your handling code here
@@ -220,21 +211,21 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        Vector salons = new Vector();
-            erreur = new ErrorDialog();
-             try 
+        
+        ListSalon.removeAllItems();
+        
+        try 
         {            
+            connector = new Mysql();
             
-            String query = "SELECT * FROM Salon;";
+            String query = "SELECT nomSalon FROM Salon;";
             
             ResultSet result = connector.sendQuery(query);
             
             while(result.next())
             {
-                salons.add(result.getString("nomSalon"));
+                ListSalon.addItem(result.getString("nomSalon"));
             }
-            
-            ListSalon.setListData(salons);
             
             
         }  catch (SQLException ex) 
@@ -246,15 +237,34 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
 
     private void supprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supprimerActionPerformed
         // TODO add your handling code here:
-      
+                 
+        erreur = new ErrorDialog();
+        try 
+        {    
+            String query = "DELETE MessageSalon FROM MessageSalon, Salon WHERE nomSalon=\""+ListSalon.getSelectedItem()+"\" AND MessageSalon.idSalon=Salon.idSalon;";
+            System.out.println(query);
+            connector.sendUpdate(query);
             
-            erreur = new ErrorDialog();
-             try 
-        {            
+            query = "DELETE Accede FROM Accede, Salon WHERE nomSalon=\""+ListSalon.getSelectedItem()+"\" AND Accede.idSalon=Salon.idSalon;";
+            System.out.println(query);
+            connector.sendUpdate(query); 
             
-            String query = "DELETE FROM 'Salon' WHERE nomSalon=\""+val+"\";";
+            query = "DELETE FROM Salon WHERE nomSalon=\""+ListSalon.getSelectedItem()+"\";";
+            System.out.println(query);
+            connector.sendUpdate(query);     
             
-           connector.sendUpdate(query);          
+            //Actualisation de la liste des salons
+            
+            ListSalon.removeAllItems();
+            
+            query = "SELECT nomSalon FROM Salon;";
+            
+            ResultSet result = connector.sendQuery(query);
+            
+            while(result.next())
+            {
+                ListSalon.addItem(result.getString("nomSalon"));
+            }
             
         }  catch (SQLException ex) 
         {
@@ -262,6 +272,16 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
             erreur.showError("Erreur SQL :\n" + ex.getMessage());
         }
     }//GEN-LAST:event_supprimerActionPerformed
+
+    private void ListSalonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListSalonActionPerformed
+        // TODO add your handling code here:              
+    }//GEN-LAST:event_ListSalonActionPerformed
+
+    private void AccesTchatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AccesTchatActionPerformed
+        // TODO add your handling code here:
+        Messagerie = new Appclient();
+        Messagerie.setVisible(true);
+    }//GEN-LAST:event_AccesTchatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,13 +320,13 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> ListSalon;
+    private javax.swing.JButton AccesTchat;
+    private javax.swing.JComboBox<String> ListSalon;
     private javax.swing.JButton creer;
     private javax.swing.JButton deconnexion;
     private javax.swing.JButton gerer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton supprimer;
     // End of variables declaration//GEN-END:variables
 
@@ -327,7 +347,7 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
                 salons.add(result.getString("nomSalon"));
             }
             
-            ListSalon.setListData(salons);
+            //ListSalon.setListData(salons);
             
             
         }  catch (SQLException ex) 
