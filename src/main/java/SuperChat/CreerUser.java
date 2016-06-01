@@ -15,14 +15,14 @@ import java.util.logging.Logger;
  *
  * @author pumba
  */
-public class Creer extends javax.swing.JFrame {
+public class CreerUser extends javax.swing.JFrame {
 
     private Mysql connector;
     private ErrorDialog erreur;
     /**
      * Creates new form Creer
      */
-    public Creer() {
+    public CreerUser() {
         initComponents();
         erreur = new ErrorDialog();
     }
@@ -42,9 +42,10 @@ public class Creer extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         Creer = new javax.swing.JButton();
-        nomnew = new javax.swing.JTextField();
-        description = new javax.swing.JTextField();
+        nomuser = new javax.swing.JTextField();
+        passwd = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        AdminCheck = new javax.swing.JCheckBox();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -60,7 +61,7 @@ public class Creer extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 1, 15)); // NOI18N
         jLabel1.setText("Administrateur");
 
-        jLabel2.setText("Nom du nouveau Salon :");
+        jLabel2.setText("Nom de l'utilisateur :");
 
         Creer.setText("Créer");
         Creer.addActionListener(new java.awt.event.ActionListener() {
@@ -69,48 +70,52 @@ public class Creer extends javax.swing.JFrame {
             }
         });
 
-        nomnew.addActionListener(new java.awt.event.ActionListener() {
+        nomuser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nomnewActionPerformed(evt);
+                nomuserActionPerformed(evt);
             }
         });
 
-        description.addActionListener(new java.awt.event.ActionListener() {
+        passwd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                descriptionActionPerformed(evt);
+                passwdActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("Description :");
+        jLabel4.setText("Mot de passe :");
+
+        AdminCheck.setText("Administrateur");
+        AdminCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 70, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(111, 111, 111))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(92, 92, 92))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nomnew, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(55, 55, 55))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(Creer, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(passwd, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nomuser, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(55, 55, 55))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(99, 99, 99))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(126, 126, 126))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(Creer, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(127, 127, 127))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(AdminCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(101, 101, 101))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,23 +127,25 @@ public class Creer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nomnew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(nomuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(passwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AdminCheck)
+                .addGap(18, 18, 18)
                 .addComponent(Creer)
-                .addContainerGap())
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nomnewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomnewActionPerformed
+    private void nomuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomuserActionPerformed
         // TODO add your handling code here:
         CreerActionPerformed(evt);
-    }//GEN-LAST:event_nomnewActionPerformed
+    }//GEN-LAST:event_nomuserActionPerformed
 
     private void CreerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreerActionPerformed
         // TODO add your handling code here:
@@ -146,25 +153,28 @@ public class Creer extends javax.swing.JFrame {
         {            
             connector = new Mysql();
             ResultSet result;
+            String nom = nomuser.getText();
+            String password = passwd.getText();
+            int isAdmin = 0;
+            if(AdminCheck.isSelected()){
+                isAdmin = 1;
+            } else if (!AdminCheck.isSelected()){
+                isAdmin = 0;
+            }
             
-            String nom = nomnew.getText();
-            String des = description.getText();
-            
-            String requete = "SELECT COUNT(nomSalon) FROM Salon WHERE nomSalon=\""+nom+"\";";
+            String requete = "SELECT COUNT(login) FROM User WHERE login=\""+nom+"\";";
             result = connector.sendQuery(requete);
             result.first();
             
-            if (result.getString("COUNT(nomSalon)").contentEquals("0")){
-                requete = "INSERT INTO Salon (nomSalon,description) values (\""+nom+"\",\""+des+"\");";
+            if (result.getString("COUNT(login)").contentEquals("0")){
+                requete = "INSERT INTO User(login, password, isAdmin, statut) values (\""+nom+"\",\""+password+"\",\""+isAdmin+"\",\"Hors Ligne\");";
                 connector.sendUpdate(requete);
                 connector.close();
                 this.dispose();
-            } else if(result.getString("COUNT(nomSalon)").contentEquals("1")){
-                erreur.showError("Salon deja existant.");
+            } else if(result.getString("COUNT(login)").contentEquals("1")){
+                erreur.showError("Utilisateur deja existant.");
             }
-            
-            
-           
+                 
         }  catch (SQLException ex) 
         {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,10 +183,10 @@ public class Creer extends javax.swing.JFrame {
             
     }//GEN-LAST:event_CreerActionPerformed
 
-    private void descriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionActionPerformed
+    private void passwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwdActionPerformed
         // TODO add your handling code here:
         CreerActionPerformed(evt);
-    }//GEN-LAST:event_descriptionActionPerformed
+    }//GEN-LAST:event_passwdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,33 +205,35 @@ public class Creer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreerUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreerUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreerUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreerUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Creer().setVisible(true);
+                new CreerUser().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox AdminCheck;
     private javax.swing.JButton Creer;
-    private javax.swing.JTextField description;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField nomnew;
+    private javax.swing.JTextField nomuser;
+    private javax.swing.JTextField passwd;
     // End of variables declaration//GEN-END:variables
 }

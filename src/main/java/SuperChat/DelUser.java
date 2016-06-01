@@ -15,16 +15,35 @@ import java.util.logging.Logger;
  *
  * @author pumba
  */
-public class Creer extends javax.swing.JFrame {
+public class DelUser extends javax.swing.JFrame {
 
     private Mysql connector;
     private ErrorDialog erreur;
     /**
      * Creates new form Creer
      */
-    public Creer() {
+    public DelUser() {
         initComponents();
         erreur = new ErrorDialog();
+        try 
+        {            
+            connector = new Mysql();
+            
+            String requete = "SELECT login FROM User;";
+            
+            ResultSet result = connector.sendQuery(requete);
+            
+            while(result.next())
+            {
+                ListUser.addItem(result.getString("login"));
+            }
+            
+            
+        }  catch (SQLException ex) 
+        {
+            Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
+            erreur.showError("Erreur SQL :\n" + ex.getMessage());
+        }
     }
 
     /**
@@ -41,10 +60,8 @@ public class Creer extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        Creer = new javax.swing.JButton();
-        nomnew = new javax.swing.JTextField();
-        description = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        Del = new javax.swing.JButton();
+        ListUser = new javax.swing.JComboBox<>();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -60,57 +77,44 @@ public class Creer extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 1, 15)); // NOI18N
         jLabel1.setText("Administrateur");
 
-        jLabel2.setText("Nom du nouveau Salon :");
+        jLabel2.setText("Utilisateurs :");
 
-        Creer.setText("Créer");
-        Creer.addActionListener(new java.awt.event.ActionListener() {
+        Del.setText("Supprimer");
+        Del.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CreerActionPerformed(evt);
+                DelActionPerformed(evt);
             }
         });
 
-        nomnew.addActionListener(new java.awt.event.ActionListener() {
+        ListUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nomnewActionPerformed(evt);
+                ListUserActionPerformed(evt);
             }
         });
-
-        description.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                descriptionActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Description :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 70, Short.MAX_VALUE)
+                .addGap(0, 66, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(111, 111, 111))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(92, 92, 92))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nomnew, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(55, 55, 55))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(Creer, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(29, 29, 29)))
+                        .addGap(99, 99, 99))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(Del, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(118, 118, 118))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(ListUser, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,61 +126,41 @@ public class Creer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nomnew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Creer)
-                .addContainerGap())
+                .addComponent(ListUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Del)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nomnewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomnewActionPerformed
+    private void DelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelActionPerformed
         // TODO add your handling code here:
-        CreerActionPerformed(evt);
-    }//GEN-LAST:event_nomnewActionPerformed
-
-    private void CreerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreerActionPerformed
-        // TODO add your handling code here:
+        erreur = new ErrorDialog();
         try 
-        {            
-            connector = new Mysql();
-            ResultSet result;
+        {    
+            String requete = "DELETE MessageUser FROM MessageUser, User WHERE login=\""+ListUser.getSelectedItem()+"\" AND MessageUser.idExpediteur=User.idUser;";
+            //System.out.println(requete);
+            connector.sendUpdate(requete);
+                       
+            requete = "DELETE FROM User WHERE login=\""+ListUser.getSelectedItem()+"\";";
+            //System.out.println(requete);
+            connector.sendUpdate(requete);     
             
-            String nom = nomnew.getText();
-            String des = description.getText();
+            connector.close();
+            this.dispose();
             
-            String requete = "SELECT COUNT(nomSalon) FROM Salon WHERE nomSalon=\""+nom+"\";";
-            result = connector.sendQuery(requete);
-            result.first();
-            
-            if (result.getString("COUNT(nomSalon)").contentEquals("0")){
-                requete = "INSERT INTO Salon (nomSalon,description) values (\""+nom+"\",\""+des+"\");";
-                connector.sendUpdate(requete);
-                connector.close();
-                this.dispose();
-            } else if(result.getString("COUNT(nomSalon)").contentEquals("1")){
-                erreur.showError("Salon deja existant.");
-            }
-            
-            
-           
         }  catch (SQLException ex) 
         {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
             erreur.showError("Erreur SQL :\n" + ex.getMessage());
         }
-            
-    }//GEN-LAST:event_CreerActionPerformed
+    }//GEN-LAST:event_DelActionPerformed
 
-    private void descriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionActionPerformed
+    private void ListUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListUserActionPerformed
         // TODO add your handling code here:
-        CreerActionPerformed(evt);
-    }//GEN-LAST:event_descriptionActionPerformed
+    }//GEN-LAST:event_ListUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,33 +179,34 @@ public class Creer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DelUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DelUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DelUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Creer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DelUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Creer().setVisible(true);
+                new DelUser().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Creer;
-    private javax.swing.JTextField description;
+    private javax.swing.JButton Del;
+    private javax.swing.JComboBox<String> ListUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField nomnew;
     // End of variables declaration//GEN-END:variables
 }
