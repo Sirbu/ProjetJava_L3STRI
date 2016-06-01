@@ -19,79 +19,74 @@ public class PageGere extends javax.swing.JFrame {
 
     private Mysql connector;
     private ErrorDialog erreur;
-    
+
     /**
      * Creates new form PageGere
      */
     public PageGere() {
         initComponents();
-                   
+
         this.setLocationRelativeTo(null);
-        
+
         connector = new Mysql();
         erreur = new ErrorDialog();
-        try
-        {
+        try {
             ComboUsers.removeAllItems();
-            ComboAcces.removeAllItems(); 
+            ComboAcces.removeAllItems();
             ComboSalons.removeAllItems();
-            
+
             // On remplit la ComboBox avec les noms de Salons
-            String query = "SELECT nomSalon FROM Salon;";            
+            String query = "SELECT nomSalon FROM Salon;";
             ResultSet result = connector.sendQuery(query);
 
-            while(result.next())
-            {
+            while (result.next()) {
                 ComboSalons.addItem(result.getString("nomSalon"));
             }
-            
+
             // Idem avec les Users
-            query = "SELECT login FROM User;";            
+            query = "SELECT login FROM User;";
             result = connector.sendQuery(query);
-            while(result.next())
-            {
+            while (result.next()) {
                 ComboUsers.addItem(result.getString("login"));
             }
-            
+
             // Idem avec les droits d'accès
             ComboAcces.addItem("aucun");
             ComboAcces.addItem("lecture");
             ComboAcces.addItem("ecriture");
             ComboAcces.addItem("total");
-            
+
             // on sélectionne le droit d'accès en
             // fonction de l'utilisateur
             query = "SELECT lecture, ecriture FROM Accede, User"
                     + " WHERE User.login = '" + ComboUsers.getSelectedItem() + "'"
-                    + " AND User.idUser = Accede.idUser;";
+                    + " AND User.idUser = Accede.idUser"
+                    + " AND Accede.idSalon = '" + ComboSalons.getSelectedItem() + "';";
             result = connector.sendQuery(query);
-            result.first();
-            if(result.getString("lecture").contentEquals("1"))
-            {
-                if(result.getString("ecriture").contentEquals("1"))
-                {
-                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(4));
+             // on sélectionne le droit d'accès en
+            // fonction de l'utilisateur
+            query = "SELECT lecture, ecriture FROM Accede, User"
+                    + " WHERE User.login = '" + ComboUsers.getSelectedItem() + "'"
+                    + " AND User.idUser = Accede.idUser"
+                    + " AND Accede.idSalon = '" + ComboSalons.getSelectedItem() + "';";
+            result = connector.sendQuery(query);
+            if (!result.first()) {
+                ComboAcces.setSelectedItem(ComboAcces.getItemAt(0));
+            } else if (result.getString("lecture").contentEquals("1")) {
+                if (result.getString("ecriture").contentEquals("1")) {
+                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(3));
+                } else {
+                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(1));
                 }
-                else
-                {
-                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(2));
-                }
+            } else if (result.getString("ecriture").contentEquals("1")) {
+                ComboAcces.setSelectedItem(ComboAcces.getItemAt(2));
+            } else {
+                ComboAcces.setSelectedItem(ComboAcces.getItemAt(0));
             }
-            else if(result.getString("ecriture").contentEquals("1"))
-            {
-                ComboAcces.setSelectedItem(ComboAcces.getItemAt(3));
-            }
-            else
-            {
-                ComboAcces.setSelectedItem(ComboAcces.getItemAt(1));
-            } 
-        }catch (SQLException ex) 
-        {
+        } catch (SQLException ex) {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
             erreur.showError("Erreur SQL :\n" + ex.getMessage());
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             erreur.showError("Erreur : \n" + e.getMessage());
         }
     }
@@ -201,52 +196,38 @@ public class PageGere extends javax.swing.JFrame {
     private void ReturnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReturnButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_ReturnButtonActionPerformed
-   
+
     private void ComboSalonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboSalonsActionPerformed
         try {
             ComboUsers.removeAllItems();
-            ComboAcces.removeAllItems();
-            
+
             // Idem avec les Users
             String query = "SELECT login FROM User;";
             ResultSet result = connector.sendQuery(query);
-            while(result.next())
-            {
+            while (result.next()) {
                 ComboUsers.addItem(result.getString("login"));
             }
-            
-            // Idem avec les droits d'accès
-            ComboAcces.addItem("aucun");
-            ComboAcces.addItem("lecture");
-            ComboAcces.addItem("ecriture");
-            ComboAcces.addItem("total");
-            
+           
             // on sélectionne le droit d'accès en
             // fonction de l'utilisateur
             query = "SELECT lecture, ecriture FROM Accede, User"
                     + " WHERE User.login = '" + ComboUsers.getSelectedItem() + "'"
-                    + " AND User.idUser = Accede.idUser;";
+                    + " AND User.idUser = Accede.idUser"
+                    + " AND Accede.idSalon = '" + ComboSalons.getSelectedItem() + "';";
             result = connector.sendQuery(query);
-            result.first();
-            if(result.getString("lecture").contentEquals("1"))
-            {
-                if(result.getString("ecriture").contentEquals("1"))
-                {
-                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(4));
+            if (!result.first()) {
+                ComboAcces.setSelectedItem(0);
+            } else if (result.getString("lecture").contentEquals("1")) {
+                if (result.getString("ecriture").contentEquals("1")) {
+                    ComboAcces.setSelectedItem(3);
+                } else {
+                    ComboAcces.setSelectedItem(1);
                 }
-                else
-                {
-                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(2));
-                }
+            } else if (result.getString("ecriture").contentEquals("1")) {
+                ComboAcces.setSelectedItem(2);
+            } else {
+                ComboAcces.setSelectedItem(0);
             }
-            else if(result.getString("ecriture").contentEquals("1"))
-            {
-                ComboAcces.setSelectedItem(ComboAcces.getItemAt(3));
-            }
-            else
-            {
-                ComboAcces.setSelectedItem(ComboAcces.getItemAt(1));
-            }  
         } catch (SQLException ex) {
             Logger.getLogger(PageGere.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -254,50 +235,36 @@ public class PageGere extends javax.swing.JFrame {
 
     private void ComboUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboUsersActionPerformed
         try {
-            ComboAcces.removeAllItems();
             ComboSalons.removeAllItems();
-            
+
             // On remplit la ComboBox avec les noms de Salons
             String query = "SELECT nomSalon FROM Salon;";
             ResultSet result = connector.sendQuery(query);
-            
-            while(result.next())
-            {
+
+            while (result.next()) {
                 ComboSalons.addItem(result.getString("nomSalon"));
             }
-            
-            // Idem avec les droits d'accès
-            ComboAcces.addItem("aucun");
-            ComboAcces.addItem("lecture");
-            ComboAcces.addItem("ecriture");
-            ComboAcces.addItem("total");
             
             // on sélectionne le droit d'accès en
             // fonction de l'utilisateur
             query = "SELECT lecture, ecriture FROM Accede, User"
                     + " WHERE User.login = '" + ComboUsers.getSelectedItem() + "'"
-                    + " AND User.idUser = Accede.idUser;";
+                    + " AND User.idUser = Accede.idUser"
+                    + " AND Accede.idSalon = '" + ComboSalons.getSelectedItem() + "';";
             result = connector.sendQuery(query);
-            result.first();
-            if(result.getString("lecture").contentEquals("1"))
-            {
-                if(result.getString("ecriture").contentEquals("1"))
-                {
-                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(4));
+            if (!result.first()) {
+                ComboAcces.setSelectedItem(0);
+            } else if (result.getString("lecture").contentEquals("1")) {
+                if (result.getString("ecriture").contentEquals("1")) {
+                    ComboAcces.setSelectedItem(3);
+                } else {
+                    ComboAcces.setSelectedItem(1);
                 }
-                else
-                {
-                    ComboAcces.setSelectedItem(ComboAcces.getItemAt(2));
-                }
+            } else if (result.getString("ecriture").contentEquals("1")) {
+                ComboAcces.setSelectedItem(2);
+            } else {
+                ComboAcces.setSelectedItem(0);
             }
-            else if(result.getString("ecriture").contentEquals("1"))
-            {
-                ComboAcces.setSelectedItem(ComboAcces.getItemAt(3));
-            }
-            else
-            {
-                ComboAcces.setSelectedItem(ComboAcces.getItemAt(1));
-            }    
         } catch (SQLException ex) {
             Logger.getLogger(PageGere.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -307,7 +274,6 @@ public class PageGere extends javax.swing.JFrame {
         
     }//GEN-LAST:event_ComboAccesActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */

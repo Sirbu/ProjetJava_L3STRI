@@ -135,16 +135,6 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
         setTitle("SuperChat : Messagerie");
 
         DeconnectButton.setText("Deconnexion");
-        DeconnectButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                DeconnectButtonMouseExited(evt);
-            }
-        });
-        DeconnectButton.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                DeconnectButtonMouseMoved(evt);
-            }
-        });
         DeconnectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeconnectButtonActionPerformed(evt);

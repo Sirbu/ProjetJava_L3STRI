@@ -103,6 +103,7 @@ INSERT INTO MessageUser (contenu,dateEnvoi,idExpediteur,idRecepteur) VALUES ('Me
 INSERT INTO MessageUser (contenu,dateEnvoi,idExpediteur,idRecepteur) VALUES ('Message2','2016-05-10 17:53:45', '1', '2');
 
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('1','2','1','1');
+INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('1','1','1','1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('2','1','1','0');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '1', '1', '1');
 INSERT INTO Accede (idUser,idSalon,lecture,ecriture) VALUES ('3', '2', '1', '1');
