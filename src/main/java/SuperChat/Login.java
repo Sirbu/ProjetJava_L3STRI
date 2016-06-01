@@ -2,6 +2,7 @@ package SuperChat;
 
 import Database.Mysql;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class Login extends javax.swing.JFrame {
     private static String username;
 
     private Appclient messagerie;
+    private Appadmin admin;
     private ErrorDialog erreur;
     
     private Mysql connector;
@@ -193,12 +195,20 @@ public class Login extends javax.swing.JFrame {
                 // Connexion réussie !
                 // on instancie la messagerie !
                 Login.username = loginField.getText();
-                messagerie = new Appclient();
-                messagerie.setVisible(true);
-                // passage à revoir
+                String requete = "SELECT isAdmin FROM User WHERE login=\""+loginField.getText()+"\";";
+                ResultSet result = connector.sendQuery(requete);
+                result.first();
+                
+                if(result.getString("isAdmin").contentEquals("1")){
+                    admin = new Appadmin();
+                    admin.setVisible(true);
+                } else if(result.getString("isAdmin").contentEquals("0")){
+                   messagerie = new Appclient();
+                   messagerie.setVisible(true);  
+                }
                 connector.close();
                 this.setVisible(false);
-                this.dispose();
+                this.dispose(); 
             }
             else
             {
