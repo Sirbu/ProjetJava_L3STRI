@@ -30,7 +30,6 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
     private PageGere gere;
     private Creer cree;
     private Timer timer;
-    private String val;
     private Appclient Messagerie;
     
     public Appadmin() {
@@ -59,8 +58,7 @@ public class Appadmin extends javax.swing.JFrame implements ActionListener{
         {
             Logger.getLogger(Appclient.class.getName()).log(Level.SEVERE, null, ex);
             erreur.showError("Erreur SQL :\n" + ex.getMessage());
-        }
-            
+        }   
     }
 
     /**
