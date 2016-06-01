@@ -40,8 +40,8 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
     public Appclient() {
         initComponents();
         
-        this.timer = new Timer(200, this);
-        this.timer.setInitialDelay(200);
+        this.timer = new Timer(500, this);
+        this.timer.setInitialDelay(500);
         this.timer.start();
         
         jTabbedPane1.setTitleAt(1, "Users");
