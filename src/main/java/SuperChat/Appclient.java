@@ -130,21 +130,12 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
         ListUsersSalon = new javax.swing.JTextArea();
         InfoSalon = new javax.swing.JLabel();
         WelcomeUser = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperChat : Messagerie");
 
         DeconnectButton.setText("Deconnexion");
-        DeconnectButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                DeconnectButtonMouseExited(evt);
-            }
-        });
-        DeconnectButton.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                DeconnectButtonMouseMoved(evt);
-            }
-        });
         DeconnectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeconnectButtonActionPerformed(evt);
@@ -229,6 +220,9 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
         WelcomeUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         WelcomeUser.setText("jLabel1");
 
+        jLabel1.setIcon(new javax.swing.ImageIcon("/home/sandre/NetBeansProjects/ProjetJava_L3STRI/src/main/java/SuperChat/Superman_petit_logo.png")); // NOI18N
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,10 +232,13 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(SendButton))
-                            .addComponent(ComboStatut, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ComboStatut, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(SendButton)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -303,7 +300,10 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(SendButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(SendButton)))))
                 .addContainerGap())
         );
 
@@ -671,6 +671,7 @@ public class Appclient extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JTextArea ReponseField;
     private javax.swing.JButton SendButton;
     private javax.swing.JLabel WelcomeUser;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
